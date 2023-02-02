@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { useRouter } from "next/router";
 import { H2 } from "../Typography";
 import { FontWeights, Shadows } from "../../styles/variables";
 const TagsListContainer = styled.div`
@@ -20,11 +21,14 @@ const Tag = styled.a`
   font-size: 1rem;
   font-weight: ${FontWeights.Normal};
 `;
+
 export default function TagsList({ tagsList }) {
-  const handlePostsWithTag = (e) => {
+  const router = useRouter();
+  const handlePostsWithTag = (e, tag) => {
     e.preventDefault();
-    console.log("click");
+    router.push(`/posts?tag=${tag}`);
   };
+
   return (
     <TagsListContainer>
       <TagsListTitle>列表</TagsListTitle>
@@ -32,7 +36,7 @@ export default function TagsList({ tagsList }) {
         // TODO: add link to tag page
         <Tag
           onClick={(e) => {
-            handlePostsWithTag(e);
+            handlePostsWithTag(e, tag.tag);
           }}
           key={i}
           href="/"

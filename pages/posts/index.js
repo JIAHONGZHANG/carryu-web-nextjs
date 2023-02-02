@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { urlFor, client } from "../../utils/sanity-utils";
 import { Colors, PrimaryColor } from "../../styles/variables";
 import Carousel from "../../comps/Carousel/Carousel";
@@ -10,6 +10,7 @@ import { SectionTitle } from "../SectionTitle";
 import {
   carouselQuery,
   getPostsQuery,
+  postsListsQuery,
   footerQuery,
   tagsListQuery,
 } from "../../utils/queries";
@@ -17,6 +18,7 @@ import { DynamicCol, GridMax } from "../../styles/layout";
 import TagsList from "../../comps/TagsList/TagsList";
 import { getTagsData } from "../../utils/helper";
 import { PostButton } from "../../comps/PostsList/PostItem";
+import { useRouter } from "next/router";
 
 const initCurrentPage = 0;
 const postsPerPage = 4;
@@ -53,7 +55,27 @@ export default function PostsListPage({
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [isLastPage, setIsLastPage] = useState(false);
   const [whetherShowText, setWhetherShowText] = useState(false);
+  const router = useRouter();
+  //NOTE: method 1
+  console.log("🚀 ~ file: index.js:58 ~ router", router.query, tagsListData);
+  useEffect(() => {
+    const { tag } = router.query;
+    console.log("🚀 ~ file: index.js:63 ~ useEffect ~ tag", tag);
+    if (tag) {
+      const tagId = tagsListData.find((data) => data.tag === tag)._id;
+      console.log(
+        "🚀 ~ file: index.js:66 ~ useEffect ~ tagId",
+        postsListsQuery(tagId)
+      );
+      client.fetch(postsListsQuery(tagId)).then((res) => {
+        console.log("🚀 ~ file: index.js:66 ~ client.fetch ~ res", res);
+        setPostsListData(res);
+      });
+    }
+  }, [router.query]);
+
   const tagsData = getTagsData(tagsListData, postsData);
+  // console.log("🚀 ~ file: index.js:57 ~ tagsData", tagsData);
   const handlePreviousPage = (e) => {
     e.preventDefault();
     const previousPage = currentPage + 1;
@@ -97,6 +119,9 @@ export default function PostsListPage({
         <GridMax>
           <DynamicCol ratio={8}>
             {/* TODO:  */}
+            {/* {postsListData.length > 0 && (
+              <PostsList data={postsListData} tagsData={tagsData} />
+            )} */}
             <PostsList data={postsListData} tagsData={tagsData} />
             {isLastPage && whetherShowText && <p>没有更多的文章了</p>}
             <ButtonContainer>
@@ -156,3 +181,6 @@ export async function getStaticProps() {
     revalidate: 300,
   };
 }
+
+//NOTE: check this out later
+// PostsListPage.getInitialProps = () => {};

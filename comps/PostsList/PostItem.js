@@ -7,11 +7,12 @@ import { urlFor } from "../../utils/sanity-utils";
 import { FileIcon, DateIcon } from "../Icons";
 import { getPostDate } from "../../utils/helper";
 const PostItemContainer = styled.div`
-  display: flex;
-  gap: 20px;
+  display: ${(props) => (props.width > 850 ? "flex" : "block")};
+  gap: ${(props) => (props.width > 850 ? "20px" : "")};
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 `;
 const ThumbnailContainer = styled.img`
+  width: 100%;
   border-radius: 4px 0 0 4px;
 `;
 const PostContentContainer = styled.div`
@@ -36,12 +37,18 @@ const TextAlignContainer = styled.div`
 `;
 
 export const PostButton = styled(Button)`
+  background-color: ${Colors.SecondaryColor};
   border: 0;
   align-self: flex-end;
+  padding: 10px 20px;
+  :hover {
+    background-color: ${Colors.PrimaryColor};
+  }
 `;
 
 export default function PostItem({
   id,
+  width,
   tagsData,
   thumbnail,
   title,
@@ -54,7 +61,7 @@ export default function PostItem({
     router.push(`/posts/${id}`);
   };
   return (
-    <PostItemContainer>
+    <PostItemContainer width={width}>
       <ThumbnailContainer
         src={urlFor(thumbnail).width(400).height(250).url()}
         alt="thumbnail"

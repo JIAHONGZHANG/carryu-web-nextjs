@@ -6,7 +6,7 @@ import { Colors, PrimaryColor } from "../../styles/variables";
 import Carousel from "../../comps/Carousel/Carousel";
 import PostsList from "../../comps/PostsList/PostsList";
 import Footer from "../../comps/Footer/Footer";
-import { SectionTitle } from "../SectionTitle";
+import { StyledSectionTitle } from "../index";
 import {
   carouselQuery,
   getPostsQuery,
@@ -19,7 +19,7 @@ import TagsList from "../../comps/TagsList/TagsList";
 import { getTagsData } from "../../utils/helper";
 import { PostButton } from "../../comps/PostsList/PostItem";
 import { useRouter } from "next/router";
-
+import useResizeObserver from "use-resize-observer";
 const initCurrentPage = 0;
 const postsPerPage = 4;
 
@@ -30,11 +30,11 @@ const PostsListPageContainer = styled.section`
 `;
 const SectionTitleWrapper = styled.div`
   text-align: center;
-  margin: 2rem 0;
+  margin: 0 0 4rem 0;
 `;
 const PostsListWrapper = styled.div`
   flex-grow: 1;
-  padding: 100px 0;
+  padding: 4rem 0;
 `;
 const ButtonContainer = styled.div`
   display: flex;
@@ -50,6 +50,7 @@ export default function PostsListPage({
   tagsListData,
   footerData,
 }) {
+  const { ref, width } = useResizeObserver();
   const [postsListData, setPostsListData] = useState(postsData);
   const [currentPage, setCurrentPage] = useState(initCurrentPage);
   const [isFirstPage, setIsFirstPage] = useState(true);
@@ -57,18 +58,20 @@ export default function PostsListPage({
   const [whetherShowText, setWhetherShowText] = useState(false);
   const router = useRouter();
   //NOTE: method 1
-  console.log("🚀 ~ file: index.js:58 ~ router", router.query, tagsListData);
   useEffect(() => {
+    setWhetherShowText(false);
+    setIsFirstPage(true);
+    setIsLastPage(false);
     const { tag } = router.query;
-    console.log("🚀 ~ file: index.js:63 ~ useEffect ~ tag", tag);
     if (tag) {
       const tagId = tagsListData.find((data) => data.tag === tag)._id;
-      console.log(
-        "🚀 ~ file: index.js:66 ~ useEffect ~ tagId",
-        postsListsQuery(tagId)
-      );
       client.fetch(postsListsQuery(tagId)).then((res) => {
-        console.log("🚀 ~ file: index.js:66 ~ client.fetch ~ res", res);
+        if (res.length < postsPerPage) {
+          setIsLastPage(true);
+        } else if (res.length === 0) {
+          setIsLastPage(true);
+          setWhetherShowText(true);
+        }
         setPostsListData(res);
       });
     }
@@ -79,7 +82,6 @@ export default function PostsListPage({
   const handlePreviousPage = (e) => {
     e.preventDefault();
     const previousPage = currentPage + 1;
-    // console.log("click previous page", currentPage, previousPage);
     client.fetch(getPostsQuery(previousPage, postsPerPage)).then((res) => {
       setPostsListData(res);
       setIsFirstPage(false);
@@ -96,7 +98,6 @@ export default function PostsListPage({
   const handleNextPage = (e) => {
     e.preventDefault();
     const nextPage = currentPage - 1;
-    // console.log("click next page", currentPage, nextPage);
     client.fetch(getPostsQuery(nextPage, postsPerPage)).then((res) => {
       setIsLastPage(false);
       setPostsListData(res);
@@ -107,56 +108,102 @@ export default function PostsListPage({
     setCurrentPage(nextPage);
   };
   return (
-    <PostsListPageContainer>
+    <PostsListPageContainer ref={ref}>
       <Carousel
         sliderImageSrcs={imgSrcs.map((imgSrc) => urlFor(imgSrc).url())}
         sliderAlts={sliderAlts}
       />
       <PostsListWrapper>
-        <SectionTitleWrapper>
-          <SectionTitle>新闻中心</SectionTitle>
-        </SectionTitleWrapper>
         <GridMax>
-          <DynamicCol ratio={8}>
-            {/* TODO:  */}
-            {/* {postsListData.length > 0 && (
+          <StyledSectionTitle>新闻中心</StyledSectionTitle>
+        </GridMax>
+
+        {width > 850 ? (
+          <GridMax>
+            <DynamicCol ratio={8}>
+              <PostsList
+                width={width}
+                data={postsListData}
+                tagsData={tagsData}
+              />
+              {isLastPage && whetherShowText && <p>没有更多的文章了</p>}
+              <ButtonContainer>
+                {!isLastPage ? (
+                  <PostButton
+                    onClick={(e) => {
+                      handlePreviousPage(e);
+                    }}
+                    color={Colors.White}
+                    label="上一页"
+                    backgroundColor={PrimaryColor}
+                  />
+                ) : (
+                  <div />
+                )}
+                {!isFirstPage ? (
+                  <PostButton
+                    onClick={(e) => {
+                      handleNextPage(e);
+                    }}
+                    color={Colors.White}
+                    label="下一页"
+                    backgroundColor={PrimaryColor}
+                  />
+                ) : (
+                  <div />
+                )}
+              </ButtonContainer>
+            </DynamicCol>
+            <DynamicCol ratio={4}>
+              <TagsList width={width} tagsList={tagsListData} />
+            </DynamicCol>
+          </GridMax>
+        ) : (
+          <GridMax>
+            <DynamicCol ratio={4}>
+              <TagsList width={width} tagsList={tagsListData} />
+            </DynamicCol>
+            <DynamicCol ratio={8}>
+              {/* TODO:  */}
+              {/* {postsListData.length > 0 && (
               <PostsList data={postsListData} tagsData={tagsData} />
             )} */}
-            <PostsList data={postsListData} tagsData={tagsData} />
-            {isLastPage && whetherShowText && <p>没有更多的文章了</p>}
-            <ButtonContainer>
-              {!isLastPage ? (
-                <PostButton
-                  onClick={(e) => {
-                    handlePreviousPage(e);
-                  }}
-                  color={Colors.White}
-                  label="上一页"
-                  backgroundColor={PrimaryColor}
-                />
-              ) : (
-                <div />
-              )}
-              {!isFirstPage ? (
-                <PostButton
-                  onClick={(e) => {
-                    handleNextPage(e);
-                  }}
-                  color={Colors.White}
-                  label="下一页"
-                  backgroundColor={PrimaryColor}
-                />
-              ) : (
-                <div />
-              )}
-            </ButtonContainer>
-          </DynamicCol>
-          <DynamicCol ratio={4}>
-            <TagsList tagsList={tagsListData} />
-          </DynamicCol>
-        </GridMax>
+              <PostsList
+                width={width}
+                data={postsListData}
+                tagsData={tagsData}
+              />
+              {isLastPage && whetherShowText && <p>没有更多的文章了</p>}
+              <ButtonContainer>
+                {!isLastPage ? (
+                  <PostButton
+                    onClick={(e) => {
+                      handlePreviousPage(e);
+                    }}
+                    color={Colors.White}
+                    label="上一页"
+                    backgroundColor={PrimaryColor}
+                  />
+                ) : (
+                  <div />
+                )}
+                {!isFirstPage ? (
+                  <PostButton
+                    onClick={(e) => {
+                      handleNextPage(e);
+                    }}
+                    color={Colors.White}
+                    label="下一页"
+                    backgroundColor={PrimaryColor}
+                  />
+                ) : (
+                  <div />
+                )}
+              </ButtonContainer>
+            </DynamicCol>
+          </GridMax>
+        )}
       </PostsListWrapper>
-
       <Footer footerData={footerData} />
     </PostsListPageContainer>
   );

@@ -6,12 +6,13 @@ const PostsListContainer = styled.div`
   flex-direction: column;
   gap: 24px;
 `;
-export default function PostsList({ data, tagsData }) {
+export default function PostsList({ width, data, tagsData }) {
   return (
     <PostsListContainer>
       {data.map((post, i) => (
         <PostItem
           key={i}
+          width={width}
           id={post._id}
           tagsData={tagsData}
           thumbnail={post.thumbnail.asset}

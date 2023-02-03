@@ -3,12 +3,7 @@ import styled from "styled-components";
 import PortableText from "@sanity/block-content-to-react";
 import { client, urlFor } from "../../utils/sanity-utils";
 import { H2 } from "../../comps/Typography";
-import {
-  FontWeights,
-  Shadows,
-  PrimaryColor,
-  Colors,
-} from "../../styles/variables";
+import { Colors } from "../../styles/variables";
 import { GridMax, DynamicCol } from "../../styles/layout";
 import {
   carouselQuery,
@@ -19,6 +14,8 @@ import {
 import Carousel from "../../comps/Carousel/Carousel";
 import Footer from "../../comps/Footer/Footer";
 import TagsList from "../../comps/TagsList/TagsList";
+import useResizeObserver from "use-resize-observer";
+
 const serializers = {
   marks: {
     link: ({ children, mark }) => (
@@ -64,13 +61,13 @@ const PostTextWrapper = styled.div`
   padding: 24px;
 `;
 export default function BlogPost({ post, carousel, tagsListData, footer }) {
-  console.log("🚀 ~ file: [postId].js:67 ~ BlogPost ~ post", post);
+  const { ref, width } = useResizeObserver();
   // console.log("🚀 ~ file: [postId].js:67 ~ BlogPost ~ tagsData", tagsListData);
   const postDetail = post[0];
   const blocks = post.postContent;
 
   return (
-    <PostContainer>
+    <PostContainer ref={ref}>
       <Carousel
         sliderImageSrcs={carousel.map((imgSrc) =>
           urlFor(imgSrc.image.image.asset).width(400).url()
@@ -78,28 +75,59 @@ export default function BlogPost({ post, carousel, tagsListData, footer }) {
         sliderAlts={carousel.map((imgSrc) => imgSrc.image.alt)}
         isPost={true}
       />
-      <GridMax>
-        <DynamicCol ratio={8}>
-          <PostWrapper>
-            <Thumbnail src={urlFor(postDetail.thumbnail.asset).url()} alt="" />
-            {/* TODO: show tag */}
-            <p>Date: {postDetail._updatedAt.slice(0, 10)}</p>
-            <p>
-              Categories:{" "}
-              {tagsListData.map((tag) => (
-                <span>{tag.tag} </span>
-              ))}
-            </p>
-            <PostTitle>{postDetail.title}</PostTitle>
-            <PostTextWrapper>
-              <PortableText blocks={blocks} serializers={serializers} />
-            </PostTextWrapper>
-          </PostWrapper>
-        </DynamicCol>
-        <DynamicCol ratio={4}>
-          <TagsList tagsList={tagsListData} />
-        </DynamicCol>
-      </GridMax>
+      {width > 850 ? (
+        <GridMax>
+          <DynamicCol ratio={8}>
+            <PostWrapper>
+              <Thumbnail
+                src={urlFor(postDetail.thumbnail.asset).url()}
+                alt=""
+              />
+              {/* TODO: show tag */}
+              <p>Date: {postDetail._updatedAt.slice(0, 10)}</p>
+              <p>
+                Categories:{" "}
+                {tagsListData.map((tag) => (
+                  <span>{tag.tag} </span>
+                ))}
+              </p>
+              <PostTitle>{postDetail.title}</PostTitle>
+              <PostTextWrapper>
+                <PortableText blocks={blocks} serializers={serializers} />
+              </PostTextWrapper>
+            </PostWrapper>
+          </DynamicCol>
+          <DynamicCol ratio={4}>
+            <TagsList width={width} tagsList={tagsListData} />
+          </DynamicCol>
+        </GridMax>
+      ) : (
+        <GridMax>
+          <DynamicCol ratio={4}>
+            <TagsList width={width} tagsList={tagsListData} />
+          </DynamicCol>
+          <DynamicCol ratio={8}>
+            <PostWrapper>
+              <Thumbnail
+                src={urlFor(postDetail.thumbnail.asset).url()}
+                alt=""
+              />
+              {/* TODO: show tag */}
+              <p>Date: {postDetail._updatedAt.slice(0, 10)}</p>
+              <p>
+                Categories:{" "}
+                {tagsListData.map((tag) => (
+                  <span>{tag.tag} </span>
+                ))}
+              </p>
+              <PostTitle>{postDetail.title}</PostTitle>
+              <PostTextWrapper>
+                <PortableText blocks={blocks} serializers={serializers} />
+              </PostTextWrapper>
+            </PostWrapper>
+          </DynamicCol>
+        </GridMax>
+      )}
       <Footer footerData={footer} />
     </PostContainer>
   );

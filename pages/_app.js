@@ -1,8 +1,20 @@
 // import Head from "next/head";
 import Navbar from "../comps/Header/NavBar";
 import GlobalStyle from "../styles/globalStyles";
-
+import styled from "styled-components";
 function MyApp({ Component, pageProps }) {
+  const ContactCardContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+  `;
+  const ContactCard = styled.img`
+    width: 200px;
+    height: 200px;
+  `;
   return (
     <>
       {/* <Head>
@@ -16,6 +28,11 @@ function MyApp({ Component, pageProps }) {
       </Head> */}
       <Navbar />
       <Component {...pageProps} />
+      <ContactCardContainer>
+        <h3>咨询请加vx</h3>
+        <ContactCard src="/contact.jpeg" alt="contact card" />
+      </ContactCardContainer>
+
       <GlobalStyle />
     </>
   );

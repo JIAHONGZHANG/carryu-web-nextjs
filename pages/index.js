@@ -16,6 +16,7 @@ import {
   getPostsQuery,
   footerQuery,
 } from "../utils/queries";
+import { CarouselContextProvider } from "../comps/Carousel/CarouselContext";
 
 const EduSection = styled.section`
   position: relative;
@@ -30,7 +31,8 @@ const ImmSection = styled.section`
   }
 `;
 
-const StyledSectionTitle = styled(SectionTitle)`
+export const StyledSectionTitle = styled(SectionTitle)`
+  width: 100%;
   /* NOTE: Using this kind grid-column can help set up justify content center */
   grid-column: 6 / 8;
   margin-bottom: 4rem;
@@ -55,18 +57,22 @@ const ImmTitleWrapper = styled(StyledSectionTitle)`
 export default function Home({
   imgSrcs,
   sliderAlts,
-  sampleData,
+  sampleData: sampleListData,
   eduVideoData,
   immVideoData,
   postsData,
   footerData,
 }) {
+  const carouselValue = {
+    sliderImageSrcs: imgSrcs.map((imgSrc) => urlFor(imgSrc).url()),
+    sliderAlts: sliderAlts,
+    isPost: false,
+  };
   return (
     <>
-      <Carousel
-        sliderImageSrcs={imgSrcs.map((imgSrc) => urlFor(imgSrc).url())}
-        sliderAlts={sliderAlts}
-      />
+      <CarouselContextProvider value={carouselValue}>
+        <Carousel />
+      </CarouselContextProvider>
       <EduSection>
         <GridMax>
           <StyledSectionTitle>留学专区</StyledSectionTitle>
@@ -77,7 +83,7 @@ export default function Home({
             />
           </VideoWrapper>
         </GridMax>
-        <CardsList sampleListData={sampleData} />
+        <CardsList sampleListData={sampleListData} />
         <Background label={"background1"} />
       </EduSection>
       <ImmSection>

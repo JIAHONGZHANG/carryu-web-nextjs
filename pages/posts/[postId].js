@@ -10,7 +10,9 @@ import {
   tagsListQuery,
   footerQuery,
   postsQuery,
+  postsQuery1,
 } from "../../utils/queries";
+import { CarouselContextProvider } from "../../comps/Carousel/CarouselContext";
 import Carousel from "../../comps/Carousel/Carousel";
 import Footer from "../../comps/Footer/Footer";
 import TagsList from "../../comps/TagsList/TagsList";
@@ -53,6 +55,10 @@ const Thumbnail = styled.img`
   width: 100%;
 `;
 
+const PostContentContainer = styled.div`
+  padding: 1rem;
+`;
+
 const PostTitle = styled(H2)`
   line-height: 100%;
 `;
@@ -61,20 +67,22 @@ const PostTextWrapper = styled.div`
   padding: 24px;
 `;
 export default function BlogPost({ post, carousel, tagsListData, footer }) {
+  const carouselValue = {
+    sliderImageSrcs: carousel.map((imgSrc) =>
+      urlFor(imgSrc.image.image.asset).width(400).url()
+    ),
+    sliderAlts: carousel.map((imgSrc) => imgSrc.image.alt),
+    isPost: true,
+  };
   const { ref, width } = useResizeObserver();
-  // console.log("🚀 ~ file: [postId].js:67 ~ BlogPost ~ tagsData", tagsListData);
   const postDetail = post[0];
-  const blocks = post.postContent;
+  const blocks = postDetail.postContent;
 
   return (
     <PostContainer ref={ref}>
-      <Carousel
-        sliderImageSrcs={carousel.map((imgSrc) =>
-          urlFor(imgSrc.image.image.asset).width(400).url()
-        )}
-        sliderAlts={carousel.map((imgSrc) => imgSrc.image.alt)}
-        isPost={true}
-      />
+      <CarouselContextProvider value={carouselValue}>
+        <Carousel />
+      </CarouselContextProvider>
       {width > 850 ? (
         <GridMax>
           <DynamicCol ratio={8}>
@@ -91,10 +99,12 @@ export default function BlogPost({ post, carousel, tagsListData, footer }) {
                   <span>{tag.tag} </span>
                 ))}
               </p>
-              <PostTitle>{postDetail.title}</PostTitle>
-              <PostTextWrapper>
-                <PortableText blocks={blocks} serializers={serializers} />
-              </PostTextWrapper>
+              <PostContentContainer>
+                <PostTitle>{postDetail.title}</PostTitle>
+                <PostTextWrapper>
+                  <PortableText blocks={blocks} serializers={serializers} />
+                </PostTextWrapper>
+              </PostContentContainer>
             </PostWrapper>
           </DynamicCol>
           <DynamicCol ratio={4}>
@@ -120,10 +130,12 @@ export default function BlogPost({ post, carousel, tagsListData, footer }) {
                   <span>{tag.tag} </span>
                 ))}
               </p>
-              <PostTitle>{postDetail.title}</PostTitle>
-              <PostTextWrapper>
-                <PortableText blocks={blocks} serializers={serializers} />
-              </PostTextWrapper>
+              <PostContentContainer>
+                <PostTitle>{postDetail.title}</PostTitle>
+                <PostTextWrapper>
+                  <PortableText blocks={blocks} serializers={serializers} />
+                </PostTextWrapper>
+              </PostContentContainer>
             </PostWrapper>
           </DynamicCol>
         </GridMax>
@@ -135,9 +147,10 @@ export default function BlogPost({ post, carousel, tagsListData, footer }) {
 // NOTE: We must use getStaticPaths and getStaticProps together, we cannot use getStaticPaths without getStaticProps, but we can use getStaticProps without getStaticPaths.
 export async function getStaticProps(context) {
   const id = context.params.postId;
+  // console.log("🚀 ~ file: [postId].js:146 ~ getStaticProps ~ id", id);
   const postDetailData = await Promise.all([
     client.fetch(carouselQuery),
-    client.fetch(postsQuery, { id }),
+    client.fetch(postsQuery1, { id }),
     client.fetch(footerQuery),
     client.fetch(tagsListQuery),
   ]);

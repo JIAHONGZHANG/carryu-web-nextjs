@@ -3,6 +3,8 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { urlFor, client } from "../../utils/sanity-utils";
 import { Colors, PrimaryColor } from "../../styles/variables";
+import { CarouselContextProvider } from "../../comps/Carousel/CarouselContext";
+
 import Carousel from "../../comps/Carousel/Carousel";
 import PostsList from "../../comps/PostsList/PostsList";
 import Footer from "../../comps/Footer/Footer";
@@ -28,10 +30,7 @@ const PostsListPageContainer = styled.section`
   display: flex;
   flex-direction: column;
 `;
-const SectionTitleWrapper = styled.div`
-  text-align: center;
-  margin: 0 0 4rem 0;
-`;
+
 const PostsListWrapper = styled.div`
   flex-grow: 1;
   padding: 4rem 0;
@@ -57,6 +56,12 @@ export default function PostsListPage({
   const [isLastPage, setIsLastPage] = useState(false);
   const [whetherShowText, setWhetherShowText] = useState(false);
   const router = useRouter();
+  const carouselValue = {
+    sliderImageSrcs: imgSrcs.map((imgSrc) => urlFor(imgSrc).url()),
+    sliderAlts: sliderAlts,
+    isPost: false,
+  };
+
   //NOTE: method 1
   useEffect(() => {
     setWhetherShowText(false);
@@ -78,7 +83,6 @@ export default function PostsListPage({
   }, [router.query]);
 
   const tagsData = getTagsData(tagsListData, postsData);
-  // console.log("🚀 ~ file: index.js:57 ~ tagsData", tagsData);
   const handlePreviousPage = (e) => {
     e.preventDefault();
     const previousPage = currentPage + 1;
@@ -109,15 +113,13 @@ export default function PostsListPage({
   };
   return (
     <PostsListPageContainer ref={ref}>
-      <Carousel
-        sliderImageSrcs={imgSrcs.map((imgSrc) => urlFor(imgSrc).url())}
-        sliderAlts={sliderAlts}
-      />
+      <CarouselContextProvider value={carouselValue}>
+        <Carousel />
+      </CarouselContextProvider>
       <PostsListWrapper>
         <GridMax>
           <StyledSectionTitle>新闻中心</StyledSectionTitle>
         </GridMax>
-
         {width > 850 ? (
           <GridMax>
             <DynamicCol ratio={8}>
@@ -134,9 +136,10 @@ export default function PostsListPage({
                       handlePreviousPage(e);
                     }}
                     color={Colors.White}
-                    label="上一页"
                     backgroundColor={PrimaryColor}
-                  />
+                  >
+                    上一页
+                  </PostButton>
                 ) : (
                   <div />
                 )}
@@ -146,9 +149,10 @@ export default function PostsListPage({
                       handleNextPage(e);
                     }}
                     color={Colors.White}
-                    label="下一页"
                     backgroundColor={PrimaryColor}
-                  />
+                  >
+                    下一页
+                  </PostButton>
                 ) : (
                   <div />
                 )}
@@ -181,9 +185,10 @@ export default function PostsListPage({
                       handlePreviousPage(e);
                     }}
                     color={Colors.White}
-                    label="上一页"
                     backgroundColor={PrimaryColor}
-                  />
+                  >
+                    上一页
+                  </PostButton>
                 ) : (
                   <div />
                 )}
@@ -193,9 +198,10 @@ export default function PostsListPage({
                       handleNextPage(e);
                     }}
                     color={Colors.White}
-                    label="下一页"
                     backgroundColor={PrimaryColor}
-                  />
+                  >
+                    下一页
+                  </PostButton>
                 ) : (
                   <div />
                 )}

@@ -15,7 +15,6 @@ export default function Dots(props) {
     ${({ active }) =>
       active
         ? css`
-            /* TODO: change the color to Colors.YellowPrimary */
             background-color: ${PrimaryColor}};
           `
         : css`
@@ -34,7 +33,7 @@ export default function Dots(props) {
   const { sliderImageSrcs } = useContext(CarouselContext);
   return (
     <DotsContainer>
-      {sliderImageSrcs.map((sliderImageSrc, i) => (
+      {sliderImageSrcs.map((_, i) => (
         <Dot
           onClick={() => {
             props.setActiveSlide(i);

@@ -1,12 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
+import Carousel from "./Carousel";
+export const CarouselContext = React.createContext({
+  sliderImageSrcs: [],
+  sliderAlts: [],
+  isPost: null,
+});
 
-export const CarouselContext = React.createContext(null);
-
-export const CarouselContextProvider = (props) => {
+export const CarouselContextProvider = ({ value, children }) => {
   return (
-    <CarouselContext.Provider value={props.value}>
-      {props.children}
+    <CarouselContext.Provider value={value}>
+      {children}
     </CarouselContext.Provider>
   );
 };

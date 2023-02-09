@@ -12,6 +12,7 @@ const PostItemContainer = styled.div`
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 `;
 const ThumbnailContainer = styled.img`
+  cursor: pointer;
   width: 100%;
   border-radius: 4px 0 0 4px;
 `;
@@ -25,6 +26,7 @@ const PostContentContainer = styled.div`
 `;
 
 const PostTitle = styled.p`
+  cursor: pointer;
   font-size: 1rem;
   font-weight: 400;
   line-height: 24px;
@@ -47,8 +49,8 @@ export const PostButton = styled(Button)`
 `;
 
 export default function PostItem({
-  id,
   width,
+  id,
   tagsData,
   thumbnail,
   title,
@@ -56,19 +58,28 @@ export default function PostItem({
   tags,
 }) {
   const router = useRouter();
-  const handlePostDetail = (e) => {
+  const handlePostDetail = (e, id) => {
     e.preventDefault();
     router.push(`/posts/${id}`);
   };
   return (
     <PostItemContainer width={width}>
       <ThumbnailContainer
+        onClick={(e) => {
+          handlePostDetail(e, id);
+        }}
         src={urlFor(thumbnail).width(400).height(250).url()}
         alt="thumbnail"
       />
 
       <PostContentContainer>
-        <PostTitle>{title}</PostTitle>
+        <PostTitle
+          onClick={(e) => {
+            handlePostDetail(e, id);
+          }}
+        >
+          {title}
+        </PostTitle>
         <TextAlignContainer>
           <FileIcon />
           <TextAlignContainer>
@@ -81,14 +92,16 @@ export default function PostItem({
           <DateIcon />
           <p>{getPostDate(date)}</p>
         </TextAlignContainer>
+        {/* NOTE: Whenever we call a prop 'children', it will automatically set equal to whatever is between the opening and closing tag.*/}
         <PostButton
           onClick={(e) => {
-            handlePostDetail(e);
+            handlePostDetail(e, id);
           }}
           color={Colors.White}
-          label="阅读更多"
           backgroundColor={PrimaryColor}
-        />
+        >
+          阅读更多
+        </PostButton>
       </PostContentContainer>
     </PostItemContainer>
   );

@@ -3,12 +3,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import Button from "../Button/Button";
-import {
-  FontWeights,
-  Shadows,
-  PrimaryColor,
-  Colors,
-} from "../../styles/variables";
+import { FontWeights, Shadows, Colors } from "../../styles/variables";
 import { P } from "../Typography";
 import { ShowMoreIcon } from "../Icons";
 import { PostIconWrapper } from "../Icons/styles";
@@ -37,24 +32,24 @@ const PostsListTitle = styled(P)`
 `;
 const PostLink = styled.a`
   /* NOTE: text and icon align center */
-  vertical-align: middle;
+  /* vertical-align: middle; */
   text-decoration: none;
   font-weight: ${FontWeights.Normal};
   font-size: 16px;
   cursor: pointer;
   /* NOTE: small trick to avoid hover 1px bounce */
   /* border-bottom: 1px solid ${Colors.White}; */
-  /* :visited {
+  :visited {
     color: ${Colors.Black};
   }
   :hover {
-    color: ${PrimaryColor};
+    color: ${Colors.SecondaryColor};
     svg {
       path {
-        stroke: ${PrimaryColor};
+        stroke: ${Colors.SecondaryColor};
       }
     }
-  } */
+  }
 `;
 const TextContent = styled.span`
   font-size: ${(props) => props.fontSize};
@@ -91,7 +86,7 @@ export default function PostsListTitleComp({ postListData }) {
           ))}
         </PostsLinkWrapper>
         <ButtonWrapper>
-          <Button onClick={(e) => handleButtonClick(e)} label={"更多"} />
+          <Button onClick={(e) => handleButtonClick(e)}>更多</Button>
         </ButtonWrapper>
       </PostsListWrapper>
     </PostsListContainer>

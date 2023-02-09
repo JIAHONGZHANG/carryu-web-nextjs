@@ -6,31 +6,16 @@ import { Colors } from "../../styles/variables";
 const Button = styled.button`
   padding: 6px 8px;
   color: ${(props) => props.color};
-  background-color: ${(props) => props.backgroundColor};
+  /* NOTE:  || returns the first truthy value, while ?? returns the first non-null and non-undefined value. */
+  background-color: ${(props) => props.backgroundColor ?? Colors.White};
   border-radius: 4px;
   cursor: pointer;
 `;
 // NOTE:
-export const ButtonCom = ({
-  onClick,
-  color,
-  label,
-  backgroundColor = Colors.White,
-  className,
-}) => (
-  <Button
-    onClick={onClick}
-    color={color}
-    backgroundColor={backgroundColor}
-    className={className}
-  >
-    {label}
-  </Button>
-);
+export const ButtonCom = (props) => <Button {...props} />;
 
 export default ButtonCom;
 Button.propTypes = {
   color: PropTypes.string,
-  label: PropTypes.string,
   backgroundColor: PropTypes.string,
 };

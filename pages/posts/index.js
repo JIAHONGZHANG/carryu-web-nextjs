@@ -1,4 +1,4 @@
-import React from "react";
+import { useContext } from "react";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { urlFor, client } from "../../utils/sanity-utils";
@@ -21,7 +21,7 @@ import TagsList from "../../comps/TagsList/TagsList";
 import { getTagsData } from "../../utils/helper";
 import { PostButton } from "../../comps/PostsList/PostItem";
 import { useRouter } from "next/router";
-import useResizeObserver from "use-resize-observer";
+import { WindowWidthContext } from "../WindowWidthContextProvider";
 const initCurrentPage = 0;
 const postsPerPage = 4;
 
@@ -49,7 +49,7 @@ export default function PostsListPage({
   tagsListData,
   footerData,
 }) {
-  const { ref, width } = useResizeObserver();
+  const width = useContext(WindowWidthContext);
   const [postsListData, setPostsListData] = useState(postsData);
   const [currentPage, setCurrentPage] = useState(initCurrentPage);
   const [isFirstPage, setIsFirstPage] = useState(true);
@@ -112,7 +112,7 @@ export default function PostsListPage({
     setCurrentPage(nextPage);
   };
   return (
-    <PostsListPageContainer ref={ref}>
+    <PostsListPageContainer>
       <CarouselContextProvider value={carouselValue}>
         <Carousel />
       </CarouselContextProvider>

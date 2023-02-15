@@ -42,11 +42,15 @@ const Tag = styled.a`
 `;
 
 export default function TagsList({ width, tagsList }) {
+  console.log("🚀 ~ file: TagsList.js:45 ~ TagsList ~ width", width);
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
   const handlePostsWithTag = (e, tag) => {
     e.preventDefault();
     router.push(`/posts?tag=${tag}`);
+  };
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
   };
   return (
     <>
@@ -70,11 +74,11 @@ export default function TagsList({ width, tagsList }) {
           <TagsListTitleContainer>
             <TagsListTitle>列表</TagsListTitle>
             {isOpen ? (
-              <ToggleBtn onClick={() => setIsOpen(!isOpen)}>
+              <ToggleBtn onClick={handleToggle}>
                 <TagsListCloseBtn style={{ color: "red" }} />
               </ToggleBtn>
             ) : (
-              <ToggleBtn onClick={() => setIsOpen(!isOpen)}>{">"}</ToggleBtn>
+              <ToggleBtn onClick={handleToggle}>{">"}</ToggleBtn>
             )}
           </TagsListTitleContainer>
           {isOpen &&

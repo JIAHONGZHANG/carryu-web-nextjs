@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React from "react";
 import { useRouter } from "next/router";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -7,7 +7,7 @@ import { FontWeights, Shadows, Colors } from "../../styles/variables";
 import { P } from "../Typography";
 import { ShowMoreIcon } from "../Icons";
 import { PostIconWrapper } from "../Icons/styles";
-import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
+import useResizeObserver from "use-resize-observer";
 
 const PostsListContainer = styled.div``;
 
@@ -58,8 +58,8 @@ const ButtonWrapper = styled.div`
   margin-left: auto;
 `;
 export default function PostsListTitleComp({ postListData }) {
-  const width = useContext(WindowWidthContext);
   const router = useRouter();
+  const { ref, width } = useResizeObserver();
   const fontSize = width <= 500 ? "16px" : "18px";
   const handleClick = (e, id) => {
     e.preventDefault();
@@ -70,7 +70,7 @@ export default function PostsListTitleComp({ postListData }) {
     router.push("/posts");
   };
   return (
-    <PostsListContainer>
+    <PostsListContainer ref={ref}>
       <PostsListWrapper width={width}>
         <PostsListTitle>往期回顾</PostsListTitle>
         <PostsLinkWrapper>

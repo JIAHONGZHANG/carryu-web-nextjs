@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
 import PortableText from "@sanity/block-content-to-react";
 import { client, urlFor } from "../../utils/sanity-utils";
@@ -16,7 +16,8 @@ import { CarouselContextProvider } from "../../comps/Carousel/CarouselContext";
 import Carousel from "../../comps/Carousel/Carousel";
 import Footer from "../../comps/Footer/Footer";
 import TagsList from "../../comps/TagsList/TagsList";
-import { WindowWidthContext } from "../WindowWidthContextProvider";
+import useResizeObserver from "use-resize-observer";
+
 const serializers = {
   marks: {
     link: ({ children, mark }) => (
@@ -66,7 +67,6 @@ const PostTextWrapper = styled.div`
   padding: 24px;
 `;
 export default function BlogPost({ post, carousel, tagsListData, footer }) {
-  const width = useContext(WindowWidthContext);
   const carouselValue = {
     sliderImageSrcs: carousel.map((imgSrc) =>
       urlFor(imgSrc.image.image.asset).width(400).url()
@@ -74,11 +74,12 @@ export default function BlogPost({ post, carousel, tagsListData, footer }) {
     sliderAlts: carousel.map((imgSrc) => imgSrc.image.alt),
     isPost: true,
   };
+  const { ref, width } = useResizeObserver();
   const postDetail = post[0];
   const blocks = postDetail.postContent;
 
   return (
-    <PostContainer>
+    <PostContainer ref={ref}>
       <CarouselContextProvider value={carouselValue}>
         <Carousel />
       </CarouselContextProvider>

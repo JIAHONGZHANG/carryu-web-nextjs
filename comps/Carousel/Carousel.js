@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import styled from "styled-components";
-
+import useResizeObserver from "use-resize-observer";
 import PropTypes from "prop-types";
 import { CarouselContext } from "../Carousel/CarouselContext";
-import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
 import SliderList from "./SliderList/SliderList";
 import Dots from "./Dots/Dots";
 import { CarouselWrapper, SlidersWrapper } from "./styles";
@@ -13,8 +12,7 @@ const CarouselContainer = styled.div`
 `;
 export default function Carousel() {
   const { isPost } = useContext(CarouselContext);
-  const width = useContext(WindowWidthContext);
-  console.log("🚀 ~ file: Carousel.js:17 ~ Carousel ~ width", width);
+  const { ref, width } = useResizeObserver();
   const [activeSlide, setActiveSlide] = useState(0);
   const [carouselHeight, setCarouselHeight] = useState(null);
   const sliderWrapperRef = useRef(null);
@@ -35,7 +33,7 @@ export default function Carousel() {
     }
   }, [width]);
   return (
-    <CarouselContainer>
+    <CarouselContainer ref={ref}>
       <CarouselWrapper carouselHeight={carouselHeight}>
         <SlidersWrapper ref={sliderWrapperRef}>
           <SliderList />

@@ -21,7 +21,7 @@ import TagsList from "../../comps/TagsList/TagsList";
 import { getTagsData } from "../../utils/helper";
 import { PostButton } from "../../comps/PostsList/PostItem";
 import { useRouter } from "next/router";
-import { WindowWidthContext } from "../WindowWidthContextProvider";
+import useResizeObserver from "use-resize-observer";
 const initCurrentPage = 0;
 const postsPerPage = 4;
 
@@ -49,7 +49,7 @@ export default function PostsListPage({
   tagsListData,
   footerData,
 }) {
-  const width = useContext(WindowWidthContext);
+  const { ref, width } = useResizeObserver();
   const [postsListData, setPostsListData] = useState(postsData);
   const [currentPage, setCurrentPage] = useState(initCurrentPage);
   const [isFirstPage, setIsFirstPage] = useState(true);
@@ -112,7 +112,7 @@ export default function PostsListPage({
     setCurrentPage(nextPage);
   };
   return (
-    <PostsListPageContainer>
+    <PostsListPageContainer ref={ref}>
       <CarouselContextProvider value={carouselValue}>
         <Carousel />
       </CarouselContextProvider>

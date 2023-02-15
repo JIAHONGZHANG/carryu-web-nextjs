@@ -1,12 +1,9 @@
-import { useContext } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import { Colors } from "../../styles/variables";
-import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
+import useResizeObserver from "use-resize-observer";
+import { Colors, PrimaryColor } from "../../styles/variables";
 const FooterContainer = styled.footer`
-  > p {
-    color: ${Colors.Black};
-  }
   width: 100%;
   font-size: 16px;
   font-family: inherit;
@@ -16,10 +13,9 @@ const FooterContainer = styled.footer`
   align-items: center;
   flex-direction: column;
   gap: 24px;
-  background-color: ${Colors.YellowPrimary};
+  background-color: ${PrimaryColor};
 `;
 const FooterWrapper = styled.div`
-  color: ${Colors.Black};
   display: ${(props) => (props.width <= 850 ? "grid" : "flex")};
   gap: 8px;
   @media screen and (min-width: 300px) and (max-width: 850px) {
@@ -28,25 +24,25 @@ const FooterWrapper = styled.div`
 `;
 const FooterLink = styled.a`
   text-decoration: none;
-  color: ${Colors.Black};
+  color: ${Colors.White};
   :visited {
     color: inherit;
   }
   :hover {
-    color: ${Colors.SecondaryColor};
+    color: inherit;
   }
 `;
 
 export default function Footer({ footerData }) {
-  const width = useContext(WindowWidthContext);
+  const { ref, width } = useResizeObserver();
   return (
-    <FooterContainer>
+    <FooterContainer ref={ref}>
       <p>@2022 CarryU留学移民教育 All Rights Reserved</p>
       <FooterWrapper width={width}>
         <span>友情链接:</span>
-        {footerData.map(({ Url, text }, i) => (
-          <FooterLink key={i} href={Url} target={"_blank"}>
-            {text}
+        {footerData.map((data, i) => (
+          <FooterLink key={i} href={data.Url} target={"_blank"}>
+            {data.text}
           </FooterLink>
         ))}
       </FooterWrapper>

@@ -1,20 +1,20 @@
-import React from "react";
+// import React from "react";
 import styled from "styled-components";
-import { H2 } from "../comps/Typography";
-import {
-  FontWeights,
-  Shadows,
-  PrimaryColor,
-  Colors,
-} from "../styles/variables";
+// import { H2 } from "../comps/Typography";
+// import {
+//   FontWeights,
+//   Shadows,
+//   PrimaryColor,
+//   Colors,
+// } from "../styles/variables";
 import { getPostsQuery } from "../utils/queries";
 import { client } from "../utils/sanity-utils";
 
-const PostWrapper = styled.div`
-  max-width: 800px;
-  padding: 0 auto;
-  text-align: center;
-`;
+// const PostWrapper = styled.div`
+//   max-width: 800px;
+//   padding: 0 auto;
+//   text-align: center;
+// `;
 
 export async function getStaticProps(context) {
   const id = context.params.postId;

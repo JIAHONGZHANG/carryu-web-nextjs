@@ -1,7 +1,7 @@
 // "use client";
-import React from "react";
+import { useContext } from "react";
 import styled from "styled-components";
-import useResizeObserver from "use-resize-observer";
+import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
 import { Background1Desktop, Background1Mobile } from "../Icons";
 import { Background2Desktop, Background2Mobile } from "../Icons";
 const Background1Wrapper = styled.div`
@@ -27,9 +27,9 @@ const Background2Wrapper = styled.div`
   }
 `;
 export default function Background({ label }) {
-  const { ref, width } = useResizeObserver();
+  const width = useContext(WindowWidthContext);
   return label === "background1" ? (
-    <Background1Wrapper ref={ref}>
+    <Background1Wrapper>
       {width <= 850 ? <Background1Mobile /> : <Background1Desktop />}
     </Background1Wrapper>
   ) : (

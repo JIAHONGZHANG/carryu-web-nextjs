@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Carousel from "./Carousel";
+
 export const CarouselContext = React.createContext({
   sliderImageSrcs: [],
   sliderAlts: [],

@@ -1,4 +1,4 @@
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { BodyStyles } from "../styles/mixins";
 export const GridMax = styled.div`
   ${BodyStyles}

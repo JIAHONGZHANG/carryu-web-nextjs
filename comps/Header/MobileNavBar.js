@@ -1,5 +1,5 @@
 import { HeaderOpenIcon, HeaderCloseIcon } from "../Icons";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { Nav, LinkBtn, Logo } from "./DesktopNavBar";
 
 const MobileHeader = styled.section`

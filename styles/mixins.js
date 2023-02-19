@@ -1,4 +1,4 @@
-import { css } from "styled-components/macro";
+import { css } from "styled-components";
 import { FontWeights, breakpoints } from "./variables";
 // NOTE:
 export const respondTo = Object.keys(breakpoints).reduce(

@@ -1,4 +1,4 @@
-import styled from "styled-components/macro";
+import styled from "styled-components";
 //NOTE: naming here usually some big container we use name container, some small ones we use wrapper is fine
 
 export const IconWrapper = styled.span`

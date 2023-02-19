@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import PortableText from "@sanity/block-content-to-react";
 import { client, urlFor } from "../../utils/sanity-utils";
 import { H2 } from "../../comps/Typography";

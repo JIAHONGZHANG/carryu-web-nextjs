@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { useRouter } from "next/router";
 import { H2 } from "../Typography";
 import { Colors, FontWeights, Shadows } from "../../styles/variables";

@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { client } from "../../utils/sanity-utils";
 import { Colors, PrimaryColor } from "../../styles/variables";

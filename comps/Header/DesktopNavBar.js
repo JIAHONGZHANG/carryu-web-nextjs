@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { Colors } from "../../styles/variables";
 import Link from "next/link";
 const LinkContainer = styled.ul`

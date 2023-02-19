@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
 import DesktopNavBar from "./DesktopNavBar";
 import MobileNavBar from "./MobileNavBar";

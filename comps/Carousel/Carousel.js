@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect, useContext } from "react";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 
 import PropTypes from "prop-types";
 import { CarouselContext } from "../Carousel/CarouselContext";

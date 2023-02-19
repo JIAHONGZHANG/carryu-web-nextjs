@@ -1,4 +1,4 @@
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { client } from "../utils/sanity-utils";
 import { GridMax, DynamicCol } from "../styles/layout";
 import { SectionTitle } from "./SectionTitle";

@@ -39,7 +39,6 @@
     "@storybook/react": "^6.5.13",
     "@storybook/testing-library": "^0.0.13",
     "babel-plugin-named-exports-order": "^0.0.2",
-    "babel-plugin-styled-components": "latest",
     "prop-types": "^15.8.1"
   }
 }

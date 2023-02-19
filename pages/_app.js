@@ -1,7 +1,7 @@
 import Navbar from "../comps/Header/NavBar";
 import GlobalStyle from "../styles/globalStyles";
 import useResizeObserver from "use-resize-observer";
-import styled from "styled-components/macro";
+import styled from "styled-components";
 import { urlFor } from "../utils/sanity-utils";
 import WindowWidthContextProvider from "./WindowWidthContextProvider";
 import Carousel from "../comps/Carousel/Carousel";

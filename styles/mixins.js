@@ -1,4 +1,4 @@
-import { css } from "styled-components";
+import { css } from "styled-components/macro";
 import { FontWeights, breakpoints } from "./variables";
 // NOTE:
 export const respondTo = Object.keys(breakpoints).reduce(
@@ -22,10 +22,58 @@ export const H2Styles = css`
 `;
 export const H3Styles = css`
   font-family: inherit;
-  /* TODO: responsive font size */
   font-weight: ${FontWeights.Bold};
   line-height: 150%;
   font-size: 28px;
+  ${respondTo.smallTablet`
+    font-size: 18px
+  `}
+  ${respondTo.mediumTablet`
+    font-size: 26px
+  `}
+  ${respondTo.largeTablet`
+    font-size: 34px
+  `} 
+  ${respondTo.desktop`
+    font-size: 30px
+  `};
+`;
+
+export const BodyStyles = css`
+  font-family: inherit;
+  /* font-size: 20px; */
+  font-weight: ${FontWeights.Normal};
+  line-height: 25px;
+  ${respondTo.smallTablet`
+    padding: 1rem
+  `}
+  ${respondTo.mediumTablet`
+    padding: 2rem
+  `}
+  ${respondTo.largeTablet`
+    padding: 2rem
+  `} 
+  ${respondTo.desktop`
+    padding: 3rem
+  `};
+`;
+
+export const TextStyles = css`
+  ${respondTo.smallTablet`
+    font-size: 11px
+  `}
+  ${respondTo.mediumTablet`
+    font-size: 14px
+  `} 
+  ${respondTo.largeTablet`
+    font-size: 14px
+  `} 
+  ${respondTo.desktop`
+    font-size: 16px
+  `};
+`;
+
+export const ButtonStyles = css`
   ${respondTo.smallTablet`
     font-size: 18px
   `}
@@ -40,9 +88,18 @@ export const H3Styles = css`
   `};
 `;
 
-export const BodyStyles = css`
-  font-family: inherit;
-  font-size: 20px;
-  font-weight: ${FontWeights.Normal};
-  line-height: 25px;
+export const PostTextGap = css`
+  gap: 10;
+  ${respondTo.smallTablet`
+    gap: 5px
+  `}
+  ${respondTo.mediumTablet`
+    gap: 10px
+  `}
+  ${respondTo.largeTablet`
+    gap: 10px
+  `} 
+  ${respondTo.desktop`
+    gap: 10px
+  `};
 `;

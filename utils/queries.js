@@ -13,8 +13,8 @@ export const getPostsQuery = (currentPage, postsPerPage) => {
     currentPage * postsPerPage + postsPerPage
   }] {_updatedAt,title,_id,myTags,postContent,thumbnail}`;
 };
-export const postsQuery =
-  '*[_type == "posts" ] | order(_updatedAt desc) {_updatedAt,title,_id,myTags,postContent,thumbnail}';
+export const postsQuery = `*[_type == "posts"] | order(_updatedAt desc) {_updatedAt,title,_id,myTags,postContent,thumbnail}`;
+export const postsQuery1 = `*[_type == "posts" && _id == $id] | order(_updatedAt desc) {_updatedAt,title,_id,myTags,postContent,thumbnail}`;
 export const postsListsQuery = (tagId) =>
   `*[_type == "posts" && "${tagId}" in myTags[]._ref] | order(_updatedAt desc) {_updatedAt,title,_id,myTags,postContent,thumbnail}`;
 

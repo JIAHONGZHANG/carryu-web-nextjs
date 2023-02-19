@@ -1,13 +1,11 @@
-import styled from "styled-components";
-import { urlFor, client } from "../utils/sanity-utils";
+import styled from "styled-components/macro";
+import { client } from "../utils/sanity-utils";
 import { GridMax, DynamicCol } from "../styles/layout";
 import { SectionTitle } from "./SectionTitle";
 import VideoEmbed from "../comps/Video/VideoEmbed";
 import CardsList from "../comps/CardsList/CardsList";
-import Carousel from "../comps/Carousel/Carousel";
 import Background from "../comps/Background/Background";
 import PostsListTitleComp from "../comps/PostsList/PostsListTitleComp";
-import Footer from "../comps/Footer/Footer";
 import {
   carouselQuery,
   sampleQuery,
@@ -16,8 +14,6 @@ import {
   getPostsQuery,
   footerQuery,
 } from "../utils/queries";
-import { CarouselContextProvider } from "../comps/Carousel/CarouselContext";
-
 const EduSection = styled.section`
   position: relative;
   padding: 6rem 0 9rem 0;
@@ -55,24 +51,13 @@ const ImmTitleWrapper = styled(StyledSectionTitle)`
   }
 `;
 export default function Home({
-  imgSrcs,
-  sliderAlts,
   sampleData: sampleListData,
   eduVideoData,
   immVideoData,
   postsData,
-  footerData,
 }) {
-  const carouselValue = {
-    sliderImageSrcs: imgSrcs.map((imgSrc) => urlFor(imgSrc).url()),
-    sliderAlts: sliderAlts,
-    isPost: false,
-  };
   return (
     <>
-      <CarouselContextProvider value={carouselValue}>
-        <Carousel />
-      </CarouselContextProvider>
       <EduSection>
         <GridMax>
           <StyledSectionTitle>留学专区</StyledSectionTitle>
@@ -103,7 +88,6 @@ export default function Home({
         </GridMax>
         <Background label={"background2"} />
       </ImmSection>
-      <Footer footerData={footerData} />
     </>
   );
 }

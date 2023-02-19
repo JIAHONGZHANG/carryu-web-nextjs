@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import PortableText from "@sanity/block-content-to-react";
 import { client, urlFor } from "../../utils/sanity-utils";
 import { H2 } from "../../comps/Typography";
@@ -12,9 +12,6 @@ import {
   postsQuery,
   postsQuery1,
 } from "../../utils/queries";
-import { CarouselContextProvider } from "../../comps/Carousel/CarouselContext";
-import Carousel from "../../comps/Carousel/Carousel";
-import Footer from "../../comps/Footer/Footer";
 import TagsList from "../../comps/TagsList/TagsList";
 import { WindowWidthContext } from "../WindowWidthContextProvider";
 const serializers = {
@@ -23,7 +20,7 @@ const serializers = {
       <a
         href={mark.href}
         target={mark.blank ? "_blank" : "_self"}
-        rel="noopener"
+        rel="noreferrer"
       >
         {children}
       </a>
@@ -32,19 +29,13 @@ const serializers = {
   types: {
     mainImage: (props) => (
       <img
-        src={urlFor(props.node.image.asset).width(400).url()}
+        src={urlFor(props.node.image.asset).width(350).url()}
         alt={props.node.alt}
       />
     ),
   },
 };
 
-const PostContainer = styled.div`
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-`;
 const PostWrapper = styled.div`
   border: 1px solid ${Colors.BorderColor};
   flex-grow: 1;
@@ -65,23 +56,13 @@ const PostTitle = styled(H2)`
 const PostTextWrapper = styled.div`
   padding: 24px;
 `;
-export default function BlogPost({ post, carousel, tagsListData, footer }) {
+export default function BlogPost({ post, tagsListData }) {
   const width = useContext(WindowWidthContext);
-  const carouselValue = {
-    sliderImageSrcs: carousel.map((imgSrc) =>
-      urlFor(imgSrc.image.image.asset).width(400).url()
-    ),
-    sliderAlts: carousel.map((imgSrc) => imgSrc.image.alt),
-    isPost: true,
-  };
   const postDetail = post[0];
   const blocks = postDetail.postContent;
 
   return (
-    <PostContainer>
-      <CarouselContextProvider value={carouselValue}>
-        <Carousel />
-      </CarouselContextProvider>
+    <>
       {width > 850 ? (
         <GridMax>
           <DynamicCol ratio={8}>
@@ -94,8 +75,8 @@ export default function BlogPost({ post, carousel, tagsListData, footer }) {
               <p>Date: {postDetail._updatedAt.slice(0, 10)}</p>
               <p>
                 Categories:{" "}
-                {tagsListData.map((tag) => (
-                  <span>{tag.tag} </span>
+                {tagsListData.map((tag, i) => (
+                  <span key={i}>{tag.tag} </span>
                 ))}
               </p>
               <PostContentContainer>
@@ -125,8 +106,8 @@ export default function BlogPost({ post, carousel, tagsListData, footer }) {
               <p>Date: {postDetail._updatedAt.slice(0, 10)}</p>
               <p>
                 Categories:{" "}
-                {tagsListData.map((tag) => (
-                  <span>{tag.tag} </span>
+                {tagsListData.map((tag, i) => (
+                  <span key={i}>{tag.tag} </span>
                 ))}
               </p>
               <PostContentContainer>
@@ -139,8 +120,7 @@ export default function BlogPost({ post, carousel, tagsListData, footer }) {
           </DynamicCol>
         </GridMax>
       )}
-      <Footer footerData={footer} />
-    </PostContainer>
+    </>
   );
 }
 // NOTE: We must use getStaticPaths and getStaticProps together, we cannot use getStaticPaths without getStaticProps, but we can use getStaticProps without getStaticPaths.
@@ -156,9 +136,11 @@ export async function getStaticProps(context) {
   // TODO: fetch footer data once
   return {
     props: {
-      carousel: postDetailData[0],
+      // carousel: postDetailData[0],
+      imgSrcs: postDetailData[0].map((data) => data.image.image.asset),
+      sliderAlts: postDetailData[0].map((data) => data.image.alt),
       post: postDetailData[1],
-      footer: postDetailData[2],
+      footerData: postDetailData[2],
       tagsListData: postDetailData[3],
     },
   };

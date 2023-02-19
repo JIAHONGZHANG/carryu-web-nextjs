@@ -1,20 +1,16 @@
 import { useContext } from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { useState, useEffect } from "react";
-import { urlFor, client } from "../../utils/sanity-utils";
+import { client } from "../../utils/sanity-utils";
 import { Colors, PrimaryColor } from "../../styles/variables";
-import { CarouselContextProvider } from "../../comps/Carousel/CarouselContext";
-
-import Carousel from "../../comps/Carousel/Carousel";
 import PostsList from "../../comps/PostsList/PostsList";
-import Footer from "../../comps/Footer/Footer";
 import { StyledSectionTitle } from "../index";
 import {
   carouselQuery,
   getPostsQuery,
   postsListsQuery,
-  footerQuery,
   tagsListQuery,
+  footerQuery,
 } from "../../utils/queries";
 import { DynamicCol, GridMax } from "../../styles/layout";
 import TagsList from "../../comps/TagsList/TagsList";
@@ -26,14 +22,14 @@ const initCurrentPage = 0;
 const postsPerPage = 4;
 
 const PostsListPageContainer = styled.section`
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
 `;
 
 const PostsListWrapper = styled.div`
   flex-grow: 1;
-  padding: 4rem 0;
+  /* padding: 4rem 0; */
 `;
 const ButtonContainer = styled.div`
   display: flex;
@@ -42,13 +38,7 @@ const ButtonContainer = styled.div`
   margin: 2rem 0;
 `;
 
-export default function PostsListPage({
-  imgSrcs,
-  sliderAlts,
-  postsData,
-  tagsListData,
-  footerData,
-}) {
+export default function PostsListPage({ postsData, tagsListData }) {
   const width = useContext(WindowWidthContext);
   const [postsListData, setPostsListData] = useState(postsData);
   const [currentPage, setCurrentPage] = useState(initCurrentPage);
@@ -56,11 +46,6 @@ export default function PostsListPage({
   const [isLastPage, setIsLastPage] = useState(false);
   const [whetherShowText, setWhetherShowText] = useState(false);
   const router = useRouter();
-  const carouselValue = {
-    sliderImageSrcs: imgSrcs.map((imgSrc) => urlFor(imgSrc).url()),
-    sliderAlts: sliderAlts,
-    isPost: false,
-  };
 
   //NOTE: method 1
   useEffect(() => {
@@ -113,9 +98,6 @@ export default function PostsListPage({
   };
   return (
     <PostsListPageContainer>
-      <CarouselContextProvider value={carouselValue}>
-        <Carousel />
-      </CarouselContextProvider>
       <PostsListWrapper>
         <GridMax>
           <StyledSectionTitle>新闻中心</StyledSectionTitle>
@@ -169,9 +151,6 @@ export default function PostsListPage({
             </DynamicCol>
             <DynamicCol ratio={8}>
               {/* TODO:  */}
-              {/* {postsListData.length > 0 && (
-              <PostsList data={postsListData} tagsData={tagsData} />
-            )} */}
               <PostsList
                 width={width}
                 data={postsListData}
@@ -210,7 +189,6 @@ export default function PostsListPage({
           </GridMax>
         )}
       </PostsListWrapper>
-      <Footer footerData={footerData} />
     </PostsListPageContainer>
   );
 }

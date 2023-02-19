@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect, useContext } from "react";
-import styled from "styled-components";
+import { useState, useRef, useEffect, useContext } from "react";
+import styled from "styled-components/macro";
 
 import PropTypes from "prop-types";
 import { CarouselContext } from "../Carousel/CarouselContext";
@@ -12,9 +12,7 @@ const CarouselContainer = styled.div`
   /* padding: 0 0 6rem 0; */
 `;
 export default function Carousel() {
-  const { isPost } = useContext(CarouselContext);
   const width = useContext(WindowWidthContext);
-  console.log("🚀 ~ file: Carousel.js:17 ~ Carousel ~ width", width);
   const [activeSlide, setActiveSlide] = useState(0);
   const [carouselHeight, setCarouselHeight] = useState(null);
   const sliderWrapperRef = useRef(null);
@@ -26,12 +24,10 @@ export default function Carousel() {
   useEffect(() => {
     // NOTE: How to get computed width value of an element
     // NOTE:
-    if (width <= 850 && !isPost) {
-      setCarouselHeight((width / 2) * 3);
-    } else if (!isPost) {
+    if (width >= 850) {
       setCarouselHeight(width / 3);
     } else {
-      setCarouselHeight(width / 5);
+      setCarouselHeight((width / 2) * 3);
     }
   }, [width]);
   return (

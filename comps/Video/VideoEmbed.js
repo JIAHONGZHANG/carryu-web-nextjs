@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import PropTypes from "prop-types";
 import { P } from "../Typography/index";
 import { FontWeights } from "../../styles/variables";

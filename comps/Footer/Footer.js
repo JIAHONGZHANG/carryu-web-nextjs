@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import PropTypes from "prop-types";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { Colors } from "../../styles/variables";
 import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
 const FooterContainer = styled.footer`

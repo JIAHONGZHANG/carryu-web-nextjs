@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import PostItem from "./PostItem";
 const PostsListContainer = styled.div`
   display: flex;

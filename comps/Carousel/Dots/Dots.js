@@ -1,6 +1,6 @@
 import React from "react";
 import { useContext } from "react";
-import styled, { css } from "styled-components";
+import styled, { css } from "styled-components/macro";
 import PropTypes from "prop-types";
 import { CarouselContext } from "../CarouselContext";
 import { PrimaryColor } from "../../../styles/variables";

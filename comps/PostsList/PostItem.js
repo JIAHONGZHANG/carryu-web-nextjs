@@ -1,11 +1,13 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { useRouter } from "next/router";
 import Button from "../Button/Button";
+import { Text } from "../Typography";
 import { Colors, PrimaryColor } from "../../styles/variables";
 import { urlFor } from "../../utils/sanity-utils";
 import { FileIcon, DateIcon } from "../Icons";
 import { getPostDate } from "../../utils/helper";
+import { PostTextGap } from "../../styles/mixins";
 const PostItemContainer = styled.div`
   display: ${(props) => (props.width > 850 ? "flex" : "block")};
   gap: ${(props) => (props.width > 850 ? "20px" : "")};
@@ -27,12 +29,17 @@ const PostContentContainer = styled.div`
 
 const PostTitle = styled.p`
   cursor: pointer;
-  font-size: 1rem;
+  font-weight: 400;
+  line-height: 24px;
+`;
+
+const PostText = styled(Text)`
   font-weight: 400;
   line-height: 24px;
 `;
 
 const TextAlignContainer = styled.div`
+  ${PostTextGap}
   display: flex;
   align-items: center;
   gap: 10px;
@@ -70,7 +77,7 @@ export default function PostItem({
         }}
         src={urlFor(thumbnail).width(400).height(250).url()}
         alt="thumbnail"
-      />
+      ></ThumbnailContainer>
 
       <PostContentContainer>
         <PostTitle
@@ -84,13 +91,13 @@ export default function PostItem({
           <FileIcon />
           <TextAlignContainer>
             {tags.map((tag, i) => (
-              <p key={i}>{tagsData[tag._ref]}</p>
+              <PostText key={i}>{tagsData[tag._ref]}</PostText>
             ))}
           </TextAlignContainer>
         </TextAlignContainer>
         <TextAlignContainer>
           <DateIcon />
-          <p>{getPostDate(date)}</p>
+          <PostText>{getPostDate(date)}</PostText>
         </TextAlignContainer>
         {/* NOTE: Whenever we call a prop 'children', it will automatically set equal to whatever is between the opening and closing tag.*/}
         <PostButton

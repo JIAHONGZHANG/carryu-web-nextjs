@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { useRouter } from "next/router";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import PropTypes from "prop-types";
 import Button from "../Button/Button";
 import { FontWeights, Shadows, Colors } from "../../styles/variables";

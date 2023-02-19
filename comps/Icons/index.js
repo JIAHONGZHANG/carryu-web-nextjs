@@ -47,7 +47,7 @@ export const Background1Desktop = () => (
       fill-rule="evenodd"
       clip-rule="evenodd"
       d="M0 0.513977L60 75.9013C120 151.289 240 302.063 360 339.757C480 377.451 600 302.063 720 239.241C840 176.418 960 126.16 1080 126.16C1200 126.16 1320 176.418 1380 201.547L1440 226.676V837.5H1380C1320 837.5 1200 837.5 1080 837.5C960 837.5 840 837.5 720 837.5C600 837.5 480 837.5 360 837.5C240 837.5 120 837.5 60 837.5H0V0.513977Z"
-      fill="#FFBD00"
+      fill="#04ADBF"
     />
   </svg>
 );
@@ -63,7 +63,7 @@ export const Background1Mobile = () => (
       fill-rule="evenodd"
       clip-rule="evenodd"
       d="M0 0L17.9167 61.4277C35.8333 122.855 71.6667 245.711 107.5 276.425C143.333 307.139 179.167 245.711 215 194.521C250.833 143.331 286.667 102.38 322.5 102.38C358.333 102.38 394.167 143.331 412.083 163.807L430 184.283V682H412.083C394.167 682 358.333 682 322.5 682C286.667 682 250.833 682 215 682C179.167 682 143.333 682 107.5 682C71.6667 682 35.8333 682 17.9167 682H0V0Z"
-      fill="#FFBD00"
+      fill="#04ADBF"
     />
   </svg>
 );
@@ -75,7 +75,7 @@ export const Background2Mobile = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M-60 0L430 158.106V841L-60 682.894V0Z" fill="#FFBD00" />
+    <path d="M-60 0L430 158.106V841L-60 682.894V0Z" fill="#04ADBF" />
   </svg>
 );
 
@@ -87,7 +87,7 @@ export const Background2Desktop = () => (
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
   >
-    <path d="M0 0L1441 158.106V841L0 682.894V0Z" fill="#FFBD00" />
+    <path d="M0 0L1441 158.106V841L0 682.894V0Z" fill="#04ADBF" />
   </svg>
 );
 
@@ -119,6 +119,62 @@ export const DateIcon = () => (
   >
     <path
       d="M6 5V1M14 5V1M5 9H15M3 19H17C17.5304 19 18.0391 18.7893 18.4142 18.4142C18.7893 18.0391 19 17.5304 19 17V5C19 4.46957 18.7893 3.96086 18.4142 3.58579C18.0391 3.21071 17.5304 3 17 3H3C2.46957 3 1.96086 3.21071 1.58579 3.58579C1.21071 3.96086 1 4.46957 1 5V17C1 17.5304 1.21071 18.0391 1.58579 18.4142C1.96086 18.7893 2.46957 19 3 19Z"
+      stroke="#3F3F46"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+  </svg>
+);
+
+export const HeaderOpenIcon = () => (
+  <svg
+    width="40"
+    height="40"
+    viewBox="0 0 40 40"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M6.66669 30H33.3334M6.66669 10H33.3334H6.66669ZM6.66669 20H33.3334H6.66669Z"
+      stroke="#3F3F46"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <rect x="0.5" y="0.5" width="39" height="39" rx="3.5" stroke="#111827" />
+  </svg>
+);
+
+export const HeaderCloseIcon = () => (
+  <svg
+    width="40"
+    height="40"
+    viewBox="0 0 40 40"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M10 10L30 30M10 30L30 10L10 30Z"
+      stroke="#3F3F46"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    />
+    <rect x="0.5" y="0.5" width="39" height="39" rx="3.5" stroke="black" />
+  </svg>
+);
+
+export const TagsListCloseBtn = () => (
+  <svg
+    width="16"
+    height="9"
+    viewBox="0 0 16 9"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      d="M15 1L8 8L1 1"
       stroke="#3F3F46"
       stroke-width="2"
       stroke-linecap="round"

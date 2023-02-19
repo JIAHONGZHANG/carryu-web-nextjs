@@ -1,5 +1,5 @@
 import { H3 } from "../comps/Typography";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { PrimaryColor } from "../styles/variables";
 
 export const SectionTitle = styled(H3)`

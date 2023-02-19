@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { urlFor, client } from "../../utils/sanity-utils";
 import { Colors } from "../../styles/variables";
 import { CarouselContextProvider } from "../../comps/Carousel/CarouselContext";

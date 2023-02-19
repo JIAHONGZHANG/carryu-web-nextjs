@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import styled from "styled-components";
+import { useState } from "react";
+import styled from "styled-components/macro";
 import { useRouter } from "next/router";
 import { H2 } from "../Typography";
 import { Colors, FontWeights, Shadows } from "../../styles/variables";
@@ -42,15 +42,11 @@ const Tag = styled.a`
 `;
 
 export default function TagsList({ width, tagsList }) {
-  console.log("🚀 ~ file: TagsList.js:45 ~ TagsList ~ width", width);
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
   const handlePostsWithTag = (e, tag) => {
     e.preventDefault();
     router.push(`/posts?tag=${tag}`);
-  };
-  const handleToggle = () => {
-    setIsOpen(!isOpen);
   };
   return (
     <>
@@ -74,11 +70,11 @@ export default function TagsList({ width, tagsList }) {
           <TagsListTitleContainer>
             <TagsListTitle>列表</TagsListTitle>
             {isOpen ? (
-              <ToggleBtn onClick={handleToggle}>
+              <ToggleBtn onClick={() => setIsOpen(!isOpen)}>
                 <TagsListCloseBtn style={{ color: "red" }} />
               </ToggleBtn>
             ) : (
-              <ToggleBtn onClick={handleToggle}>{">"}</ToggleBtn>
+              <ToggleBtn onClick={() => setIsOpen(!isOpen)}>{">"}</ToggleBtn>
             )}
           </TagsListTitleContainer>
           {isOpen &&

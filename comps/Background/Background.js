@@ -1,6 +1,6 @@
 // "use client";
 import { useContext } from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
 import { Background1Desktop, Background1Mobile } from "../Icons";
 import { Background2Desktop, Background2Mobile } from "../Icons";

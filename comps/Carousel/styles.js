@@ -1,5 +1,5 @@
 // "use client";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 export const CarouselWrapper = styled.div`
   width: 100%;

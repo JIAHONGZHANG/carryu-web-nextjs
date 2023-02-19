@@ -24,7 +24,6 @@ export const Shadows = {
   Medium: "0px 2px 4px rgba(0, 0, 0, 0.06), 0px 4px 6px rgba(0, 0, 0, 0.1)",
 };
 
-// export const Paddings = {};
 export const breakpoints = {
   mobile: "500px",
   smallTablet: "850px",

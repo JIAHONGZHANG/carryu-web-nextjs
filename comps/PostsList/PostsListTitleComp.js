@@ -28,6 +28,7 @@ const PostsLinkWrapper = styled.div`
   gap: 18px;
 `;
 const PostsListTitle = styled(P)`
+  padding: 0;
   font-weight: ${FontWeights.SuperBold};
 `;
 const PostLink = styled.a`

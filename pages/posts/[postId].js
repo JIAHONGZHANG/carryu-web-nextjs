@@ -73,12 +73,12 @@ export default function BlogPost({ post, tagsListData }) {
               />
               {/* TODO: show tag */}
               <p>Date: {postDetail._updatedAt.slice(0, 10)}</p>
-              <p>
+              {/* <p>
                 Categories:{" "}
                 {tagsListData.map((tag, i) => (
                   <span key={i}>{tag.tag} </span>
                 ))}
-              </p>
+              </p> */}
               <PostContentContainer>
                 <PostTitle>{postDetail.title}</PostTitle>
                 <PostTextWrapper>
@@ -104,12 +104,12 @@ export default function BlogPost({ post, tagsListData }) {
               />
               {/* TODO: show tag */}
               <p>Date: {postDetail._updatedAt.slice(0, 10)}</p>
-              <p>
+              {/* <p>
                 Categories:{" "}
                 {tagsListData.map((tag, i) => (
                   <span key={i}>{tag.tag} </span>
                 ))}
-              </p>
+              </p> */}
               <PostContentContainer>
                 <PostTitle>{postDetail.title}</PostTitle>
                 <PostTextWrapper>

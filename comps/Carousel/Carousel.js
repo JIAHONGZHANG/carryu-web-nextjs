@@ -2,7 +2,6 @@ import { useState, useRef, useEffect, useContext } from "react";
 import styled from "styled-components";
 
 import PropTypes from "prop-types";
-import { CarouselContext } from "../Carousel/CarouselContext";
 import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
 import SliderList from "./SliderList/SliderList";
 import Dots from "./Dots/Dots";

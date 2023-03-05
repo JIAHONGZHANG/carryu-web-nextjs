@@ -15,7 +15,7 @@ export default function Dots(props) {
     ${({ active }) =>
       active
         ? css`
-            background-color: ${PrimaryColor}};
+            background-color: ${PrimaryColor};
           `
         : css`
             background-color: #d9d9d9;

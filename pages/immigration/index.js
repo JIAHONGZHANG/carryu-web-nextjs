@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 import { urlFor, client } from "../../utils/sanity-utils";
 import { Colors } from "../../styles/variables";
-import { CarouselContextProvider } from "../../comps/Carousel/CarouselContext";
-import Carousel from "../../comps/Carousel/Carousel";
 import { StyledSectionTitle } from "../../pages";
 import { GridMax } from "../../styles/layout";
 import { carouselQuery, footerQuery } from "../../utils/queries";
-import Footer from "../../comps/Footer/Footer";
+import { postsListsQuery } from "../../utils/queries";
+import { useRouter } from "next/router";
+
 const TablesContainer = styled.section`
   display: flex;
   justify-content: space-around;
@@ -44,83 +44,59 @@ const TableContent = styled.a`
   text-overflow: ellipsis;
 `;
 
-export default function ImmigrationPage({
-  imgSrcs,
-  sliderAlts,
-  postsData,
-  footerData,
-}) {
-  const carouselValue = {
-    sliderImageSrcs: imgSrcs.map((imgSrc) => urlFor(imgSrc).url()),
-    sliderAlts: sliderAlts,
-    isPost: false,
-  };
-
+export default function ImmigrationPage({ postsListsByTags }) {
+  const router = useRouter();
   return (
     <div>
-      <CarouselContextProvider value={carouselValue}>
-        <Carousel />
-      </CarouselContextProvider>
       <GridMax>
         <StyledSectionTitle>澳洲移民</StyledSectionTitle>
       </GridMax>
       <TablesContainer>
-        {/* <DynamicCol ratio={8}> */}
-        <Table>
-          <TableHead>技术移民</TableHead>
-          <TableContentContainer>
-            <TableContent>技术移民详解</TableContent>
-            <TableContent>技术移民评分标准</TableContent>
-            <TableContent>189独立技术移民</TableContent>
-            <TableContent>190州担保技术移民</TableContent>
-          </TableContentContainer>
-        </Table>
-        <Table>
-          <TableHead>投资移民</TableHead>
-          <TableContentContainer>
-            <TableContent>澳大利亚商业移民综述</TableContent>
-            <TableContent>132商业天才移民永居签证</TableContent>
-            <TableContent>188A商业创新投资移民 </TableContent>
-            <TableContent>188B投资管理者临时签证</TableContent>
-          </TableContentContainer>
-        </Table>
-        <Table>
-          <TableHead>政府担保</TableHead>
-          <TableContentContainer>
-            <TableContent>澳洲新南威尔士(NSW)州政府担保详细介绍</TableContent>
-            <TableContent>澳洲南澳（SA）州政府担保详细介绍</TableContent>
-            <TableContent>澳洲维多利亚（VIC）州政府担保详细介绍 </TableContent>
-            <TableContent>澳洲塔斯马尼亚（TAS）州政府担保详细介绍</TableContent>
-          </TableContentContainer>
-        </Table>
-        <Table>
-          <TableHead>雇主担保</TableHead>
-          <TableContentContainer>
-            <TableContent>澳洲雇主担保移民详解</TableContent>
-            <TableContent>186雇主担保永居签证</TableContent>
-            <TableContent>澳洲全球人才签证GTS</TableContent>
-            <TableContent>澳洲雇主担保签证482</TableContent>
-          </TableContentContainer>
-        </Table>
-        {/* </DynamicCol> */}
+        {postsListsByTags.map((postsList, i) => (
+          <Table key={i}>
+            <TableHead>{Object.values(TAG_NAME_ID_MAPPER)[i]}</TableHead>
+            <TableContentContainer>
+              {postsList.map(({ title, _id }) => (
+                <TableContent
+                  onClick={() => router.push(`/posts/${_id}`)}
+                  key={_id}
+                >
+                  {title}
+                </TableContent>
+              ))}
+            </TableContentContainer>
+          </Table>
+        ))}
       </TablesContainer>
-      <Footer footerData={footerData} />
     </div>
   );
 }
 export async function getStaticProps() {
-  const immigrationPageData = await Promise.all([
+  const pageData = await Promise.all([
     client.fetch(carouselQuery),
     client.fetch(footerQuery),
+    ...Object.keys(TAG_NAME_ID_MAPPER).map((tagId) =>
+      client.fetch(postsListsQuery(tagId))
+    ),
   ]);
+  const [imgSrcs, footerData, ...rest] = pageData;
+  console.log("🚀 ~ file: index.js:75 ~ getStaticProps ~ rest", rest);
+
   return {
     props: {
-      imgSrcs: immigrationPageData[0].map((data) => data.image.image.asset),
-      sliderAlts: immigrationPageData[0].map((data) => data.image.alt),
-      // postsData: immigrationPageData[1].map((data) => data),
-      footerData: immigrationPageData[1].map((data) => data),
+      imgSrcs: imgSrcs.map((data) => data.image.image.asset),
+      sliderAlts: imgSrcs.map((data) => data.image.alt),
+      postsListsByTags: rest,
+      footerData: footerData.map((data) => data),
     },
     // If webhooks isn't setup then attempt to re-generate in 5 minute intervals
     revalidate: 300,
   };
 }
+
+const TAG_NAME_ID_MAPPER = {
+  "d7dc763d-acc1-4d58-a935-48844b2c3d6a": "技术移民",
+  "ae5d1aea-c9ec-42bf-ae7e-d3186145e2b7": "投资移民",
+  "a249f7e1-1ff7-40f6-b7b2-f914be43a7bd": "政府担保",
+  "01a877ae-5d57-4d78-852e-01a31f0224b4": "雇主担保",
+};

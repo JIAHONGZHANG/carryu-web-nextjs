@@ -1,6 +1,9 @@
+import React, { useContext } from "react";
 import { HeaderOpenIcon, HeaderCloseIcon } from "../Icons";
 import styled from "styled-components";
 import { Nav, LinkBtn, Logo } from "./DesktopNavBar";
+import SiteSettingsContext from "../../contexts/siteSettings";
+import { urlFor } from "../../utils/sanity-utils";
 
 const MobileHeader = styled.section`
   width: 100%;
@@ -29,6 +32,7 @@ const MobileLinkContainer = styled.ul`
 `;
 
 export default function MobileNavBar({ isModalOpen, setIsModalOpen }) {
+  const siteSettingsContext = useContext(SiteSettingsContext);
   const handleClick = (e) => {
     e.preventDefault();
     setIsModalOpen(!isModalOpen);
@@ -44,7 +48,10 @@ export default function MobileNavBar({ isModalOpen, setIsModalOpen }) {
         <MobileHeader>
           <Nav>
             <Logo href="/">
-              <img src="/logo.png" alt="CarryU Logo" />
+              <img
+                src={urlFor(siteSettingsContext.logoAsset).width(200).url()}
+                alt="logo"
+              />
             </Logo>
             <ModalControlBtn onClick={handleClick}>
               <HeaderCloseIcon />
@@ -54,22 +61,22 @@ export default function MobileNavBar({ isModalOpen, setIsModalOpen }) {
             <LinkBtn href="/" onClick={clearModal}>
               首页
             </LinkBtn>
-            <LinkBtn href="/posts" onClick={clearModal}>
+            <LinkBtn href="/study-application" onClick={clearModal}>
               留学申请
             </LinkBtn>
             <LinkBtn href="/immigrant" onClick={clearModal}>
               澳洲移民
             </LinkBtn>
-            <LinkBtn href="/posts" onClick={clearModal}>
+            <LinkBtn href="/au-visa" onClick={clearModal}>
               澳洲签证
             </LinkBtn>
             <LinkBtn href="/posts" onClick={clearModal}>
               新闻快递
             </LinkBtn>
-            <LinkBtn href="/posts" onClick={clearModal}>
+            <LinkBtn href="/events" onClick={clearModal}>
               往期活动
             </LinkBtn>
-            <LinkBtn href="/sign-up" onClick={clearModal}>
+            <LinkBtn href="/about-us" onClick={clearModal}>
               关于我们
             </LinkBtn>
           </MobileLinkContainer>
@@ -78,7 +85,10 @@ export default function MobileNavBar({ isModalOpen, setIsModalOpen }) {
       ) : (
         <Nav>
           <Logo href="/">
-            <img src="/logo.png" alt="CarryU Logo" />
+            <img
+              src={urlFor(siteSettingsContext.logoAsset).width(200).url()}
+              alt="logo"
+            />
           </Logo>
           <ModalControlBtn onClick={handleClick}>
             <HeaderOpenIcon />

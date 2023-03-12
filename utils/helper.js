@@ -1,6 +1,11 @@
 export const getPostDate = (date) => {
   const d = new Date(date);
-  return `${d.getFullYear()}-${d.getMonth() + 1}-${d.getDate()}`;
+  const month = d.getMonth() + 1;
+  const day = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
+  const year = d.getFullYear();
+
+  // return example 02/12/2021
+  return `${day}/${month}/${year}`;
 };
 
 export const getTagsData = (tagsData, postsData) => {
@@ -19,3 +24,15 @@ export const getTagsData = (tagsData, postsData) => {
 export const getRelatedTags = (tagsData, tagId) => {
   return tagsData.filter((data) => data.id === tagId);
 };
+
+export const getCarouselLinks = (pageData) =>
+  pageData[0].map((data) => {
+    if (data.externalUrl) {
+      if (data.externalUrl.internalLink) {
+        return data.externalUrl.internalLink._ref;
+      }
+      return data.externalUrl.externalUrl;
+    }
+
+    return null;
+  });

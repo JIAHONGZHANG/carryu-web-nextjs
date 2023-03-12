@@ -7,7 +7,7 @@ import { FontWeights, Shadows, Colors } from "../../styles/variables";
 import { P } from "../Typography";
 import { ShowMoreIcon } from "../Icons";
 import { PostIconWrapper } from "../Icons/styles";
-import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
+import { WindowWidthContext } from "../WindowWidthContextProvider";
 
 const PostsListContainer = styled.div``;
 

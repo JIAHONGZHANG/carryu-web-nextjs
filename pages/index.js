@@ -1,11 +1,14 @@
 import styled from "styled-components";
 import { client } from "../utils/sanity-utils";
 import { GridMax, DynamicCol } from "../styles/layout";
-import { SectionTitle } from "./SectionTitle";
+import { SectionTitle } from "../comps/SectionTitle";
+import { urlFor } from "../utils/sanity-utils";
 import VideoEmbed from "../comps/Video/VideoEmbed";
 import CardsList from "../comps/CardsList/CardsList";
 import Background from "../comps/Background/Background";
 import PostsListTitleComp from "../comps/PostsList/PostsListTitleComp";
+import Carousel from "../comps/Carousel/Carousel";
+import { CarouselContextProvider } from "../comps/Carousel/CarouselContext";
 import {
   carouselQuery,
   sampleQuery,
@@ -14,13 +17,18 @@ import {
   getPostsQuery,
   footerQuery,
 } from "../utils/queries";
+import { getCarouselLinks } from "../utils/helper";
+import SEO from "../comps/SEO";
 const EduSection = styled.section`
   position: relative;
   padding: 6rem 0 9rem 0;
 `;
 const ImmSection = styled.section`
   position: relative;
-  padding: 4rem 0 15rem 0;
+  margin-bottom: 5rem;
+  &.small-gap {
+    margin-bottom: 2rem;
+  }
   overflow: hidden;
   @media screen and (min-width: 300px) and (max-width: 850px) {
     padding: 2rem 0 1rem 0;
@@ -29,6 +37,9 @@ const ImmSection = styled.section`
 
 export const StyledSectionTitle = styled(SectionTitle)`
   width: 100%;
+  &.white {
+    color: white;
+  }
   /* NOTE: Using this kind grid-column can help set up justify content center */
   grid-column: 6 / 8;
   margin-bottom: 4rem;
@@ -45,19 +56,36 @@ const VideoWrapper = styled.div`
 `;
 const ImmTitleWrapper = styled(StyledSectionTitle)`
   /* NOTE: Using this kind grid-column can help set up justify content center */
-  margin-bottom: 12rem;
+  margin-bottom: 6rem;
   @media screen and (min-width: 300px) and (max-width: 850px) {
     margin-bottom: 4rem;
   }
 `;
 export default function Home({
+  imgSrcs,
+  sliderAlts,
+  sliderLinks,
   sampleData: sampleListData,
   eduVideoData,
   immVideoData,
   postsData,
 }) {
+  let carouselValue = {};
+
+  if (imgSrcs && sliderAlts) {
+    carouselValue = {
+      sliderImageSrcs: imgSrcs.map((imgSrc) => urlFor(imgSrc).url()),
+      sliderAlts: sliderAlts,
+      sliderLinks: sliderLinks,
+    };
+  }
+
   return (
     <>
+      <SEO title="首页" />
+      <CarouselContextProvider value={carouselValue}>
+        <Carousel />
+      </CarouselContextProvider>
       <EduSection>
         <GridMax>
           <StyledSectionTitle>留学专区</StyledSectionTitle>
@@ -72,7 +100,7 @@ export default function Home({
         <Background label={"background1"} />
       </EduSection>
       <ImmSection>
-        <GridMax>
+        <GridMax className="imm">
           <ImmTitleWrapper>移民专区</ImmTitleWrapper>
           <DynamicCol ratio={6}>
             <VideoWrapper>
@@ -101,8 +129,11 @@ export async function getStaticProps() {
     client.fetch(footerQuery),
   ]);
 
+  const sliderLinks = getCarouselLinks(homeData);
+
   return {
     props: {
+      sliderLinks,
       imgSrcs: homeData[0].map((data) => data.image.image.asset),
       sliderAlts: homeData[0].map((data) => data.image.alt),
       sampleData: homeData[1].map((data) => data),

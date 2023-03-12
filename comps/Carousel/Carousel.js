@@ -2,7 +2,8 @@ import { useState, useRef, useEffect, useContext } from "react";
 import styled from "styled-components";
 
 import PropTypes from "prop-types";
-import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
+import { WindowWidthContext } from "../WindowWidthContextProvider";
+import { CarouselContext } from "./CarouselContext";
 import SliderList from "./SliderList/SliderList";
 import Dots from "./Dots/Dots";
 import { CarouselWrapper, SlidersWrapper } from "./styles";
@@ -12,6 +13,7 @@ const CarouselContainer = styled.div`
 `;
 export default function Carousel() {
   const width = useContext(WindowWidthContext);
+  const { sliderImageSrcs } = useContext(CarouselContext);
   const [activeSlide, setActiveSlide] = useState(0);
   const [carouselHeight, setCarouselHeight] = useState(null);
   const sliderWrapperRef = useRef(null);
@@ -29,6 +31,9 @@ export default function Carousel() {
       setCarouselHeight((width / 2) * 3);
     }
   }, [width]);
+
+  if (!sliderImageSrcs) return null;
+
   return (
     <CarouselContainer>
       <CarouselWrapper carouselHeight={carouselHeight}>

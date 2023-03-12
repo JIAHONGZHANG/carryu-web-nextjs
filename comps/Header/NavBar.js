@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import styled from "styled-components";
-import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
+import { WindowWidthContext } from "../WindowWidthContextProvider";
 import DesktopNavBar from "./DesktopNavBar";
 import MobileNavBar from "./MobileNavBar";
 

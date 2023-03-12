@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useRouter } from "next/router";
 import styled from "styled-components";
 import { Colors } from "../../styles/variables";
 import Link from "next/link";
+import SiteSettingsContext from "../../contexts/siteSettings";
+import { urlFor } from "../../utils/sanity-utils";
 const LinkContainer = styled.ul`
   display: flex;
   gap: 20px;
@@ -23,25 +26,68 @@ export const Logo = styled.a`
 export const LinkBtn = styled(Link)`
   color: ${Colors.Black};
   text-decoration: none;
+  &.active {
+    color: ${Colors.SecondaryColor};
+  }
   :hover {
     color: ${Colors.SecondaryColor};
   }
 `;
 
+const navItems = [
+  {
+    name: "首页",
+    href: "/",
+  },
+  {
+    name: "留学申请",
+    href: "/study-application",
+  },
+  {
+    name: "澳洲移民",
+    href: "/immigration",
+  },
+  {
+    name: "澳洲签证",
+    href: "/au-visa",
+  },
+  {
+    name: "新闻快递",
+    href: "/posts",
+  },
+  {
+    name: "往期活动",
+    href: "/events",
+  },
+  {
+    name: "关于我们",
+    href: "/about-us",
+  },
+];
+
 export default function DesktopNavBar() {
+  const router = useRouter();
+  const siteSettingsContext = useContext(SiteSettingsContext);
+
   return (
     <Nav>
       <Logo href="/">
-        <img src="/logo.png" alt="CarryU Logo" />
+        {/* urlFor(asset).width(300).height(200).url() */}
+        <img
+          src={urlFor(siteSettingsContext.logoAsset).width(200).url()}
+          alt="logo"
+        />
       </Logo>
       <LinkContainer>
-        <LinkBtn href="/">首页</LinkBtn>
-        <LinkBtn href="/posts">留学申请</LinkBtn>
-        <LinkBtn href="/immigration">澳洲移民</LinkBtn>
-        <LinkBtn href="/posts">澳洲签证</LinkBtn>
-        <LinkBtn href="/posts">新闻快递</LinkBtn>
-        <LinkBtn href="/posts">往期活动</LinkBtn>
-        <LinkBtn href="/sign-up">关于我们</LinkBtn>
+        {navItems.map((ele, idx) => (
+          <LinkBtn
+            href={ele.href}
+            key={idx}
+            className={router.pathname === ele.href ? "active" : ""}
+          >
+            {ele.name}
+          </LinkBtn>
+        ))}
       </LinkContainer>
     </Nav>
   );

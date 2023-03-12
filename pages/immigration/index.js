@@ -4,15 +4,20 @@ import { urlFor, client } from "../../utils/sanity-utils";
 import { Colors } from "../../styles/variables";
 import { StyledSectionTitle } from "../../pages";
 import { GridMax } from "../../styles/layout";
+import BannerImageUrl from "../../public/communicate.jpg";
+import Image from "next/image";
 import { carouselQuery, footerQuery } from "../../utils/queries";
 import { postsListsQuery } from "../../utils/queries";
 import { useRouter } from "next/router";
+import { getCarouselLinks } from "../../utils/helper";
+import SEO from "../../comps/SEO";
 
 const TablesContainer = styled.section`
   display: flex;
   justify-content: space-around;
+  max-width: 1200px;
   gap: 20px;
-  margin: 1rem 0 4rem 0;
+  margin: 1rem auto 4rem auto;
 `;
 const Table = styled.article`
   display: flex;
@@ -38,16 +43,42 @@ const TableContent = styled.a`
   padding: 1rem 2rem;
   cursor: pointer;
   border-bottom: solid 1px ${Colors.GreyPrimary};
+  &:hover {
+    color: ${Colors.SecondaryColor};
+  }
   /* NOTE: Overflow text */
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `;
 
+const BannerWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 360px;
+  @media screen and (max-width: 850px) {
+    height: 180px;
+  }
+`;
+
 export default function ImmigrationPage({ postsListsByTags }) {
   const router = useRouter();
   return (
     <div>
+      <SEO title="澳洲移民" />
+      <BannerWrapper>
+        <Image
+          alt="Mountains"
+          src={BannerImageUrl}
+          placeholder="blur"
+          quality={70}
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+          }}
+        />
+      </BannerWrapper>
       <GridMax>
         <StyledSectionTitle>澳洲移民</StyledSectionTitle>
       </GridMax>
@@ -80,10 +111,12 @@ export async function getStaticProps() {
     ),
   ]);
   const [imgSrcs, footerData, ...rest] = pageData;
-  console.log("🚀 ~ file: index.js:75 ~ getStaticProps ~ rest", rest);
+
+  const sliderLinks = getCarouselLinks(pageData);
 
   return {
     props: {
+      sliderLinks,
       imgSrcs: imgSrcs.map((data) => data.image.image.asset),
       sliderAlts: imgSrcs.map((data) => data.image.alt),
       postsListsByTags: rest,

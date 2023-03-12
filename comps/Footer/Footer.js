@@ -2,7 +2,8 @@ import { useContext } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import { Colors } from "../../styles/variables";
-import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
+import { WindowWidthContext } from "../WindowWidthContextProvider";
+import Link from "next/link";
 const FooterContainer = styled.footer`
   > p {
     color: ${Colors.Black};
@@ -37,19 +38,43 @@ const FooterLink = styled.a`
   }
 `;
 
+const FooterInternalLink = styled(Link)`
+  text-decoration: none;
+  color: ${Colors.Black};
+  :visited {
+    color: inherit;
+  }
+  :hover {
+    color: ${Colors.SecondaryColor};
+  }
+`;
+
 export default function Footer({ footerData }) {
   const width = useContext(WindowWidthContext);
+
   return (
     <FooterContainer>
       <p>@2022 CarryU留学移民教育 All Rights Reserved</p>
-      <FooterWrapper width={width}>
-        <span>友情链接:</span>
-        {footerData.map(({ Url, text }, i) => (
-          <FooterLink key={i} href={Url} target={"_blank"}>
-            {text}
-          </FooterLink>
-        ))}
-      </FooterWrapper>
+      {footerData && (
+        <FooterWrapper width={width}>
+          <span>友情链接:</span>
+          {footerData.map(({ Url, text, InternalUrl }, i) =>
+            InternalUrl ? (
+              <FooterInternalLink
+                key={i}
+                href={`/posts/${InternalUrl}`}
+                target={"_blank"}
+              >
+                {text}
+              </FooterInternalLink>
+            ) : (
+              <FooterLink key={i} href={Url} target={"_blank"}>
+                {text}
+              </FooterLink>
+            )
+          )}
+        </FooterWrapper>
+      )}
     </FooterContainer>
   );
 }

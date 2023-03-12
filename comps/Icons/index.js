@@ -28,9 +28,9 @@ export const ShowMoreIcon = () => (
     <path
       d="M7.41666 3.24996H3.25C2.69746 3.24996 2.16756 3.46945 1.77686 3.86015C1.38616 4.25085 1.16666 4.78076 1.16666 5.33329V15.75C1.16666 16.3025 1.38616 16.8324 1.77686 17.2231C2.16756 17.6138 2.69746 17.8333 3.25 17.8333H13.6667C14.2192 17.8333 14.7491 17.6138 15.1398 17.2231C15.5305 16.8324 15.75 16.3025 15.75 15.75V11.5833M11.5833 1.16663H17.8333M17.8333 1.16663V7.41663M17.8333 1.16663L7.41666 11.5833"
       stroke="#3F3F46"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -102,9 +102,9 @@ export const FileIcon = () => (
     <path
       d="M3 15C2.46957 15 1.96086 14.7893 1.58579 14.4142C1.21071 14.0391 1 13.5304 1 13V3C1 2.46957 1.21071 1.96086 1.58579 1.58579C1.96086 1.21071 2.46957 1 3 1H7L9 3H13C13.5304 3 14.0391 3.21071 14.4142 3.58579C14.7893 3.96086 15 4.46957 15 5V6M3 15H17C17.5304 15 18.0391 14.7893 18.4142 14.4142C18.7893 14.0391 19 13.5304 19 13V8C19 7.46957 18.7893 6.96086 18.4142 6.58579C18.0391 6.21071 17.5304 6 17 6H7C6.46957 6 5.96086 6.21071 5.58579 6.58579C5.21071 6.96086 5 7.46957 5 8V13C5 13.5304 4.78929 14.0391 4.41421 14.4142C4.03914 14.7893 3.53043 15 3 15Z"
       stroke="#3F3F46"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -120,9 +120,9 @@ export const DateIcon = () => (
     <path
       d="M6 5V1M14 5V1M5 9H15M3 19H17C17.5304 19 18.0391 18.7893 18.4142 18.4142C18.7893 18.0391 19 17.5304 19 17V5C19 4.46957 18.7893 3.96086 18.4142 3.58579C18.0391 3.21071 17.5304 3 17 3H3C2.46957 3 1.96086 3.21071 1.58579 3.58579C1.21071 3.96086 1 4.46957 1 5V17C1 17.5304 1.21071 18.0391 1.58579 18.4142C1.96086 18.7893 2.46957 19 3 19Z"
       stroke="#3F3F46"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );
@@ -138,9 +138,9 @@ export const HeaderOpenIcon = () => (
     <path
       d="M6.66669 30H33.3334M6.66669 10H33.3334H6.66669ZM6.66669 20H33.3334H6.66669Z"
       stroke="#3F3F46"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <rect x="0.5" y="0.5" width="39" height="39" rx="3.5" stroke="#111827" />
   </svg>
@@ -157,9 +157,9 @@ export const HeaderCloseIcon = () => (
     <path
       d="M10 10L30 30M10 30L30 10L10 30Z"
       stroke="#3F3F46"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <rect x="0.5" y="0.5" width="39" height="39" rx="3.5" stroke="black" />
   </svg>
@@ -176,9 +176,9 @@ export const TagsListCloseBtn = () => (
     <path
       d="M15 1L8 8L1 1"
       stroke="#3F3F46"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

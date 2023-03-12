@@ -29,6 +29,7 @@ const ToggleBtn = styled.a`
 `;
 
 const Tag = styled.a`
+  display: inline-block;
   font-size: 1rem;
   font-weight: ${FontWeights.Normal};
   text-decoration: none;
@@ -36,12 +37,16 @@ const Tag = styled.a`
   :visited {
     color: inherit;
   }
+  &.active {
+    color: ${Colors.SecondaryColor};
+    pointer-events: none;
+  }
   :hover {
     color: ${Colors.SecondaryColor};
   }
 `;
 
-export default function TagsList({ width, tagsList }) {
+export default function TagsList({ width, tagsList, selectedTag = "" }) {
   const [isOpen, setIsOpen] = useState(true);
   const router = useRouter();
   const handlePostsWithTag = (e, tag) => {
@@ -54,15 +59,20 @@ export default function TagsList({ width, tagsList }) {
         <TagsListContainer>
           <TagsListTitle>列表</TagsListTitle>
           {tagsList.map((tag, i) => (
-            <Tag
-              onClick={(e) => {
-                handlePostsWithTag(e, tag.tag);
-              }}
-              key={i}
-              // href="/"
-            >
-              {tag.tag}
-            </Tag>
+            <div key={i}>
+              <Tag
+                onClick={(e) => {
+                  handlePostsWithTag(e, tag.tag);
+                }}
+                className={
+                  router.query.tag === tag.tag || selectedTag === tag.tag
+                    ? "active"
+                    : ""
+                }
+              >
+                {tag.tag}
+              </Tag>
+            </div>
           ))}
         </TagsListContainer>
       ) : (

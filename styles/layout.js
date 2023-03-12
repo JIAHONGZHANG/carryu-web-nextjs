@@ -13,6 +13,12 @@ export const GridMax = styled.div`
     margin: 2rem auto 1rem auto;
     padding: 10px;
   }
+  &.imm {
+    background: #f2e0c9;
+    border-radius: 0.375rem;
+    filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07))
+      drop-shadow(0 2px 2px rgb(0 0 0 / 0.06));
+  }
 `;
 
 export const DynamicCol = styled.div`

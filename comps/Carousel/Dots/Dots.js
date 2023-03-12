@@ -31,6 +31,9 @@ export default function Dots(props) {
     transform: translateX(-50%);
   `;
   const { sliderImageSrcs } = useContext(CarouselContext);
+
+  if (!sliderImageSrcs) return null;
+
   return (
     <DotsContainer>
       {sliderImageSrcs.map((_, i) => (

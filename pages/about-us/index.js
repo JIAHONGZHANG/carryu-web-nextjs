@@ -1,16 +1,21 @@
-import { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
+import BannerImageUrl from "../../public/about-us.jpg";
+import Image from "next/image";
+import { useContext } from "react";
 import PortableText from "@sanity/block-content-to-react";
 import { client, urlFor } from "../../utils/sanity-utils";
 import { H2 } from "../../comps/Typography";
 import { Colors, FontWeights } from "../../styles/variables";
 import { GridMax, DynamicCol } from "../../styles/layout";
+import { StyledSectionTitle } from "../index";
 import {
   carouselQuery,
   tagsListQuery,
   footerQuery,
   postsQuery,
   postsQuery1,
+  AboutUsQuery,
 } from "../../utils/queries";
 import TagsList from "../../comps/TagsList/TagsList";
 import { WindowWidthContext } from "../../comps/WindowWidthContextProvider";
@@ -39,6 +44,15 @@ const serializers = {
     ),
   },
 };
+
+const BannerWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 600px;
+  @media screen and (max-width: 850px) {
+    height: 320px;
+  }
+`;
 
 const PostWrapper = styled.div`
   flex-grow: 1;
@@ -79,74 +93,46 @@ const TagItem = styled(Link)`
 const PostTextWrapper = styled.div`
   padding: 24px;
 `;
-export default function BlogPost({ post, tagsListData }) {
+export default function BlogPost({ post }) {
   const width = useContext(WindowWidthContext);
-  const postDetail = post[0];
-  const blocks = postDetail.postContent;
-
-  // 2023-12-01 to 01/12/2023
-  const postDate = postDetail._updatedAt
-    .slice(0, 10)
-    .split("-")
-    .reverse()
-    .join("/");
+  const blocks = post.postContent;
 
   return (
     <>
-      <SEO title={postDetail.title} />
+      <SEO title="关于我们" />
+      <BannerWrapper>
+        <Image
+          alt="Mountains"
+          src={BannerImageUrl}
+          placeholder="blur"
+          quality={70}
+          fill
+          sizes="100vw"
+          style={{
+            objectFit: "cover",
+          }}
+        />
+      </BannerWrapper>
+      <GridMax>
+        <StyledSectionTitle className="small-gap">关于我们</StyledSectionTitle>
+      </GridMax>
       {width > 850 ? (
         <GridMax>
-          <DynamicCol ratio={8}>
+          <DynamicCol ratio={12}>
             <PostWrapper>
-              <Thumbnail
-                src={urlFor(postDetail.thumbnail.asset).url()}
-                alt=""
-              />
-              <p>Date: {postDate}</p>
-              <div>
-                {tagsListData.map((tag, i) => (
-                  <Badge
-                    name={tag.tag}
-                    key={i}
-                    link={`/posts?tag=${tag.tag}`}
-                  />
-                ))}
-              </div>
               <PostContentContainer>
-                <PostTitle>{postDetail.title}</PostTitle>
                 <PostTextWrapper>
                   <PortableText blocks={blocks} serializers={serializers} />
                 </PostTextWrapper>
               </PostContentContainer>
             </PostWrapper>
           </DynamicCol>
-          <DynamicCol ratio={4}>
-            <TagsList width={width} tagsList={tagsListData} />
-          </DynamicCol>
         </GridMax>
       ) : (
         <GridMax>
-          <DynamicCol ratio={4}>
-            <TagsList width={width} tagsList={tagsListData} />
-          </DynamicCol>
           <DynamicCol ratio={8}>
             <PostWrapper>
-              <Thumbnail
-                src={urlFor(postDetail.thumbnail.asset).url()}
-                alt=""
-              />
-              {/* TODO: show tag */}
-              <p>Date: {postDate}</p>
-              <p>
-                Categories:{" "}
-                {tagsListData.map((tag, i) => (
-                  <TagItem key={i} href={`/posts?tag=${tag.tag}`} passHref>
-                    {tag.tag}
-                  </TagItem>
-                ))}
-              </p>
               <PostContentContainer>
-                <PostTitle>{postDetail.title}</PostTitle>
                 <PostTextWrapper>
                   <PortableText blocks={blocks} serializers={serializers} />
                 </PostTextWrapper>
@@ -160,10 +146,9 @@ export default function BlogPost({ post, tagsListData }) {
 }
 // NOTE: We must use getStaticPaths and getStaticProps together, we cannot use getStaticPaths without getStaticProps, but we can use getStaticProps without getStaticPaths.
 export async function getStaticProps(context) {
-  const id = context.params.postId;
   const postDetailData = await Promise.all([
     client.fetch(carouselQuery),
-    client.fetch(postsQuery1, { id }),
+    client.fetch(AboutUsQuery),
     client.fetch(footerQuery),
     client.fetch(tagsListQuery),
   ]);
@@ -180,12 +165,4 @@ export async function getStaticProps(context) {
       tagsListData: postDetailData[3],
     },
   };
-}
-
-export async function getStaticPaths() {
-  const posts = await client.fetch(postsQuery);
-  const paths = posts.map((post) => {
-    return { params: { postId: post._id.toString() } };
-  });
-  return { paths, fallback: false };
 }

@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { useRef } from "react";
 import Card from "../Card/Card";
 import styled from "styled-components";
-import { WindowWidthContext } from "../../pages/WindowWidthContextProvider";
+import { WindowWidthContext } from "../WindowWidthContextProvider";
 const CardsListsContainer = styled.div`
   overflow: hidden;
   position: relative;

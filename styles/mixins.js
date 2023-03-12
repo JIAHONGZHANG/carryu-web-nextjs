@@ -17,7 +17,7 @@ export const H2Styles = css`
   //GOOGLE: most of the html tags can inherit font family except: (Button, Input)
   font-family: inherit;
   font-weight: ${FontWeights.Bold};
-  font-size: 3rem;
+  font-size: 2.5rem;
   line-height: 150%;
 `;
 export const H3Styles = css`

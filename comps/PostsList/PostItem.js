@@ -31,11 +31,20 @@ const PostTitle = styled.p`
   cursor: pointer;
   font-weight: 400;
   line-height: 24px;
+  &:hover {
+    color: ${Colors.SecondaryColor};
+    text-decoration: underline;
+  }
 `;
 
 const PostText = styled(Text)`
   font-weight: 400;
   line-height: 24px;
+  cursor: pointer;
+  &.tag:hover {
+    color: ${Colors.SecondaryColor};
+    text-decoration: underline;
+  }
 `;
 
 const TextAlignContainer = styled.div`
@@ -91,7 +100,15 @@ export default function PostItem({
           <FileIcon />
           <TextAlignContainer>
             {tags.map((tag, i) => (
-              <PostText key={i}>{tagsData[tag._ref]}</PostText>
+              <PostText
+                key={i}
+                onClick={() => {
+                  router.push(`/posts?tag=${tagsData[tag._ref]}`);
+                }}
+                className="tag"
+              >
+                {tagsData[tag._ref]}
+              </PostText>
             ))}
           </TextAlignContainer>
         </TextAlignContainer>

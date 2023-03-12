@@ -4,10 +4,20 @@ import Slider from "../Slider/Slider";
 import { CarouselContext } from "../CarouselContext";
 
 export default function SliderList() {
-  const { sliderImageSrcs, sliderAlts, isPost } = useContext(CarouselContext);
+  const { sliderImageSrcs, sliderAlts, isPost, sliderLinks } =
+    useContext(CarouselContext);
 
-  //GOOGLE: skeleton
+  if (!sliderImageSrcs) {
+    return null;
+  }
+
   return sliderImageSrcs.map((sliderImageSrc, i) => (
-    <Slider key={i} src={sliderImageSrc} alt={sliderAlts[i]} isPost={isPost} />
+    <Slider
+      key={i}
+      src={sliderImageSrc}
+      alt={sliderAlts[i]}
+      isPost={isPost}
+      link={sliderLinks[i]}
+    />
   ));
 }

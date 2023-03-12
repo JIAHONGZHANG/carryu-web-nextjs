@@ -1,4 +1,4 @@
-html,
+/* html,
 body {
   padding: 0;
   margin: 0;
@@ -23,4 +23,19 @@ a {
     color: white;
     background: black;
   }
-}
+} */
+import { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+  body {
+  font-family:sans-serif;
+  color:black;
+  }
+  *, *::after, *::before {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  } 
+`;
+
+export default GlobalStyle;

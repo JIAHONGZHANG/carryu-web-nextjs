@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import { urlFor, client } from "../../utils/sanity-utils";
+import { client } from "../../utils/sanity-utils";
 import { Colors } from "../../styles/variables";
 import { StyledSectionTitle } from "../../pages";
 import { GridMax } from "../../styles/layout";
 import { carouselQuery, footerQuery } from "../../utils/queries";
-import { postsListsQuery } from "../../utils/queries";
+import { postsListsQuery2 } from "../../utils/queries";
 import { useRouter } from "next/router";
 
 const TablesContainer = styled.section`
@@ -76,11 +76,10 @@ export async function getStaticProps() {
     client.fetch(carouselQuery),
     client.fetch(footerQuery),
     ...Object.keys(TAG_NAME_ID_MAPPER).map((tagId) =>
-      client.fetch(postsListsQuery(tagId))
+      client.fetch(postsListsQuery2(tagId))
     ),
   ]);
   const [imgSrcs, footerData, ...rest] = pageData;
-  console.log("🚀 ~ file: index.js:75 ~ getStaticProps ~ rest", rest);
 
   return {
     props: {

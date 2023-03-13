@@ -17,6 +17,8 @@ export const postsQuery = `*[_type == "posts"] | order(_updatedAt desc) {_update
 export const postsQuery1 = `*[_type == "posts" && _id == $id] | order(_updatedAt desc) {_updatedAt,title,_id,myTags,postContent,thumbnail}`;
 export const postsListsQuery = (tagId) =>
   `*[_type == "posts" && "${tagId}" in myTags[]._ref] | order(_updatedAt desc) {_updatedAt,title,_id,myTags,postContent,thumbnail}`;
+export const postsListsQuery2 = (tagId) =>
+  `*[_type == "posts" && "${tagId}" in myTags[]._ref] | order(_updatedAt desc) {_updatedAt,title,_id,myTags,postContent,thumbnail}[0...4]`;
 export const footerQuery =
   '*[_type == "footer"] | order(_updatedAt desc){text,"Url":externalUrl.externalUrl,"InternalUrl":externalUrl.internalLink._ref}';
 export const tagsListQuery =

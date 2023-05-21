@@ -179,6 +179,7 @@ export async function getStaticProps(context) {
       footerData: postDetailData[2],
       tagsListData: postDetailData[3],
     },
+    revalidate: 300,
   };
 }
 

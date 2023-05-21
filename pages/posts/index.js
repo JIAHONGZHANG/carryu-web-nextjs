@@ -21,6 +21,7 @@ import { PostButton } from "../../comps/PostsList/PostItem";
 import { useRouter } from "next/router";
 import { WindowWidthContext } from "../../comps/WindowWidthContextProvider";
 import SEO from "../../comps/SEO";
+import { set } from "nprogress";
 const initCurrentPage = 0;
 const postsPerPage = 4;
 
@@ -57,6 +58,8 @@ export default function PostsListPage({ postsData, tagsListData }) {
   const [isFirstPage, setIsFirstPage] = useState(true);
   const [isLastPage, setIsLastPage] = useState(false);
   const [whetherShowText, setWhetherShowText] = useState(false);
+  const [tagId, setTagId] = useState("");
+
   const router = useRouter();
 
   //NOTE: method 1
@@ -71,6 +74,7 @@ export default function PostsListPage({ postsData, tagsListData }) {
         return;
       }
       const tagId = tagsListData.find((data) => data.tag === tag)._id;
+      setTagId(tagId);
       client.fetch(postsListsQuery(tagId)).then((res) => {
         if (res.length < postsPerPage) {
           setIsLastPage(true);
@@ -87,23 +91,26 @@ export default function PostsListPage({ postsData, tagsListData }) {
   const handlePreviousPage = (e) => {
     e.preventDefault();
     const previousPage = currentPage + 1;
-    client.fetch(getPostsQuery(previousPage, postsPerPage)).then((res) => {
-      setPostsListData(res);
-      setIsFirstPage(false);
-      if (res.length < postsPerPage) {
-        setIsLastPage(true);
-        if (res.length === 0) {
-          setWhetherShowText(true);
+    client
+      .fetch(getPostsQuery(previousPage, postsPerPage, tagId))
+      .then((res) => {
+        setPostsListData(res);
+        setIsFirstPage(false);
+        if (res.length < postsPerPage) {
+          setIsLastPage(true);
+          if (res.length === 0) {
+            setWhetherShowText(true);
+          }
         }
-      }
-    });
+      });
     setCurrentPage(previousPage);
   };
 
   const handleNextPage = (e) => {
     e.preventDefault();
     const nextPage = currentPage - 1;
-    client.fetch(getPostsQuery(nextPage, postsPerPage)).then((res) => {
+
+    client.fetch(getPostsQuery(nextPage, postsPerPage, tagId)).then((res) => {
       setIsLastPage(false);
       setPostsListData(res);
       if (nextPage === 0) {

@@ -111,11 +111,8 @@ export async function getStaticProps() {
     ),
   ]);
   const [imgSrcs, footerData, ...rest] = pageData;
-<<<<<<< HEAD
 
   const sliderLinks = getCarouselLinks(pageData);
-=======
->>>>>>> immigration
 
   return {
     props: {
@@ -126,7 +123,7 @@ export async function getStaticProps() {
       footerData: footerData.map((data) => data),
     },
     // If webhooks isn't setup then attempt to re-generate in 5 minute intervals
-    revalidate: 300,
+    revalidate: 1,
   };
 }
 

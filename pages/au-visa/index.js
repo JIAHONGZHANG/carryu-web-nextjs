@@ -10,6 +10,7 @@ import { carouselQuery, footerQuery } from "../../utils/queries";
 import { postsListsQuery } from "../../utils/queries";
 import { useRouter } from "next/router";
 import { getCarouselLinks } from "../../utils/helper";
+import { revalidateTime } from "../../utils/constants";
 import VisaCard from "../../comps/VisaCard";
 import SEO from "../../comps/SEO";
 
@@ -95,7 +96,7 @@ export async function getStaticProps() {
       footerData: footerData.map((data) => data),
     },
     // If webhooks isn't setup then attempt to re-generate in 5 minute intervals
-    revalidate: 300,
+    revalidate: revalidateTime,
   };
 }
 

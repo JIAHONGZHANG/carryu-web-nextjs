@@ -17,6 +17,7 @@ import {
   getPostsQuery,
   footerQuery,
 } from "../utils/queries";
+import { revalidateTime } from "../utils/constants";
 import { getCarouselLinks } from "../utils/helper";
 import SEO from "../comps/SEO";
 const EduSection = styled.section`
@@ -143,6 +144,6 @@ export async function getStaticProps() {
       footerData: homeData[5].map((data) => data),
     },
     // If webhooks isn't setup then attempt to re-generate in 5 minute intervals
-    revalidate: 300,
+    revalidate: revalidateTime,
   };
 }

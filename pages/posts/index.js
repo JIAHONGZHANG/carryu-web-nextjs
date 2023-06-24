@@ -14,6 +14,7 @@ import {
   tagsListQuery,
   footerQuery,
 } from "../../utils/queries";
+import { revalidateTime } from "../../utils/constants";
 import { DynamicCol, GridMax } from "../../styles/layout";
 import TagsList from "../../comps/TagsList/TagsList";
 import { getCarouselLinks, getTagsData } from "../../utils/helper";
@@ -253,7 +254,7 @@ export async function getStaticProps() {
       footerData: PostPageData[3].map((data) => data),
     },
     // If webhooks isn't setup then attempt to re-generate in 5 minute intervals
-    revalidate: 300,
+    revalidate: revalidateTime,
   };
 }
 

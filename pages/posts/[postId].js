@@ -12,6 +12,7 @@ import {
   postsQuery,
   postsQuery1,
 } from "../../utils/queries";
+import { revalidateTime } from "../../utils/constants";
 import TagsList from "../../comps/TagsList/TagsList";
 import { WindowWidthContext } from "../../comps/WindowWidthContextProvider";
 import Link from "next/link";
@@ -179,7 +180,7 @@ export async function getStaticProps(context) {
       footerData: postDetailData[2],
       tagsListData: postDetailData[3],
     },
-    revalidate: 300,
+    revalidate: revalidateTime,
   };
 }
 

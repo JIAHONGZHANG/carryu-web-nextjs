@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import styled from "styled-components";
-import PortableText from "@sanity/block-content-to-react";
+import { PortableText } from "@portabletext/react";
 import { client, urlFor } from "../../utils/sanity-utils";
 import { H2 } from "../../comps/Typography";
 import { Colors, FontWeights } from "../../styles/variables";
@@ -19,25 +19,56 @@ import Link from "next/link";
 import { getCarouselLinks } from "../../utils/helper";
 import Badge from "../../comps/Badge";
 import SEO from "../../comps/SEO";
+import Error from "next/error";
+
 const serializers = {
+  block: {
+    normal: ({ children }) => {
+      if (children.length === 1) {
+        if (children[0] === "") return <br />;
+        if (children[0] === "[divider]")
+          return <hr style={{ margin: "24px 0" }} />;
+      }
+
+      if (children?.[0]?.props?.text?.startsWith("[center]")) {
+        // remove [center] from text
+        const text = children[0].props.text.slice(8);
+        // check if text is strong
+        const isStrong = children?.[0]?.props?.markType === "strong";
+
+        return (
+          <p style={{ textAlign: "center", fontWeight: isStrong ? 700 : 400 }}>
+            {text}
+          </p>
+        );
+      }
+
+      return <p>{children}</p>;
+    },
+    h1: ({ children }) => <h1 style={{ lineHeight: "64px" }}>{children}</h1>,
+    h2: ({ children }) => <h2 style={{ lineHeight: "64px" }}>{children}</h2>,
+    h3: ({ children }) => <h3 style={{ lineHeight: "64px" }}>{children}</h3>,
+    h4: ({ children }) => <h4 style={{ lineHeight: "64px" }}>{children}</h4>,
+  },
   marks: {
-    link: ({ children, mark }) => (
-      <a
-        href={mark.href}
-        target={mark.blank ? "_blank" : "_self"}
-        rel="noreferrer"
-      >
-        {children}
-      </a>
-    ),
+    link: ({ value, children }) => {
+      return (
+        <a
+          href={value.href}
+          target={value.blank ? "_blank" : "_self"}
+          rel="noreferrer"
+        >
+          {children}
+        </a>
+      );
+    },
   },
   types: {
-    mainImage: (props) => (
-      <img
-        src={urlFor(props.node.image.asset).width(350).url()}
-        alt={props.node.alt}
-      />
-    ),
+    mainImage: (props) => {
+      const url = urlFor(props.value.image.asset).width(800).url();
+
+      return <img src={url} alt={props.value?.alt} style={{ width: "100%" }} />;
+    },
   },
 };
 
@@ -79,10 +110,16 @@ const TagItem = styled(Link)`
 
 const PostTextWrapper = styled.div`
   padding: 24px;
+  line-height: 2;
 `;
 export default function BlogPost({ post, tagsListData }) {
   const width = useContext(WindowWidthContext);
   const postDetail = post[0];
+
+  if (!postDetail) {
+    return <Error statusCode={404} />;
+  }
+
   const blocks = postDetail.postContent;
 
   // 2023-12-01 to 01/12/2023
@@ -116,7 +153,7 @@ export default function BlogPost({ post, tagsListData }) {
               <PostContentContainer>
                 <PostTitle>{postDetail.title}</PostTitle>
                 <PostTextWrapper>
-                  <PortableText blocks={blocks} serializers={serializers} />
+                  <PortableText value={blocks} components={serializers} />
                 </PostTextWrapper>
               </PostContentContainer>
             </PostWrapper>
@@ -149,7 +186,7 @@ export default function BlogPost({ post, tagsListData }) {
               <PostContentContainer>
                 <PostTitle>{postDetail.title}</PostTitle>
                 <PostTextWrapper>
-                  <PortableText blocks={blocks} serializers={serializers} />
+                  <PortableText value={blocks} components={serializers} />
                 </PostTextWrapper>
               </PostContentContainer>
             </PostWrapper>
@@ -160,7 +197,7 @@ export default function BlogPost({ post, tagsListData }) {
   );
 }
 // NOTE: We must use getStaticPaths and getStaticProps together, we cannot use getStaticPaths without getStaticProps, but we can use getStaticProps without getStaticPaths.
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   const id = context.params.postId;
   const postDetailData = await Promise.all([
     client.fetch(carouselQuery),
@@ -180,14 +217,5 @@ export async function getStaticProps(context) {
       footerData: postDetailData[2],
       tagsListData: postDetailData[3],
     },
-    revalidate: revalidateTime,
   };
-}
-
-export async function getStaticPaths() {
-  const posts = await client.fetch(postsQuery);
-  const paths = posts.map((post) => {
-    return { params: { postId: post._id.toString() } };
-  });
-  return { paths, fallback: false };
 }

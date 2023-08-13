@@ -3,7 +3,7 @@ import styled from "styled-components";
 import BannerImageUrl from "../../public/about-us.jpg";
 import Image from "next/image";
 import { useContext } from "react";
-import PortableText from "@sanity/block-content-to-react";
+import { PortableText } from "@portabletext/react";
 import { client, urlFor } from "../../utils/sanity-utils";
 import { H2 } from "../../comps/Typography";
 import { Colors, FontWeights } from "../../styles/variables";
@@ -23,25 +23,63 @@ import Link from "next/link";
 import { getCarouselLinks } from "../../utils/helper";
 import Badge from "../../comps/Badge";
 import SEO from "../../comps/SEO";
+
 const serializers = {
+  block: {
+    normal: ({ children }) => {
+      if (children.length === 1) {
+        if (children[0] === "") return <br />;
+        if (children[0] === "[divider]")
+          return <hr style={{ margin: "24px 0" }} />;
+      }
+
+      if (children?.[0]?.props?.text?.startsWith("[center]")) {
+        // remove [center] from text
+        const text = children[0].props.text.slice(8);
+        // check if text is strong
+        const isStrong = children?.[0]?.props?.markType === "strong";
+
+        return (
+          <p style={{ textAlign: "center", fontWeight: isStrong ? 700 : 400 }}>
+            {text}
+          </p>
+        );
+      }
+
+      return <p>{children}</p>;
+    },
+    h1: ({ children }) => <h1 style={{ lineHeight: "64px" }}>{children}</h1>,
+    h2: ({ children }) => <h2 style={{ lineHeight: "64px" }}>{children}</h2>,
+    h3: ({ children }) => <h3 style={{ lineHeight: "64px" }}>{children}</h3>,
+    h4: ({ children }) => <h4 style={{ lineHeight: "64px" }}>{children}</h4>,
+  },
   marks: {
-    link: ({ children, mark }) => (
-      <a
-        href={mark.href}
-        target={mark.blank ? "_blank" : "_self"}
-        rel="noreferrer"
-      >
-        {children}
-      </a>
-    ),
+    link: ({ value, children }) => {
+      return (
+        <a
+          href={value.href}
+          target={value.blank ? "_blank" : "_self"}
+          rel="noreferrer"
+        >
+          {children}
+        </a>
+      );
+    },
   },
   types: {
-    mainImage: (props) => (
-      <img
-        src={urlFor(props.node.image.asset).width(350).url()}
-        alt={props.node.alt}
-      />
-    ),
+    mainImage: (props) => {
+      const url = urlFor(props.value.image.asset).width(800).url();
+
+      return (
+        <div style={{ textAlign: "center" }}>
+          <img
+            src={url}
+            alt={props.value?.alt}
+            style={{ width: "100%", maxWidth: "400px" }}
+          />
+        </div>
+      );
+    },
   },
 };
 
@@ -122,7 +160,7 @@ export default function BlogPost({ post }) {
             <PostWrapper>
               <PostContentContainer>
                 <PostTextWrapper>
-                  <PortableText blocks={blocks} serializers={serializers} />
+                  <PortableText value={blocks} components={serializers} />
                 </PostTextWrapper>
               </PostContentContainer>
             </PostWrapper>
@@ -134,7 +172,7 @@ export default function BlogPost({ post }) {
             <PostWrapper>
               <PostContentContainer>
                 <PostTextWrapper>
-                  <PortableText blocks={blocks} serializers={serializers} />
+                  <PortableText value={blocks} components={serializers} />
                 </PostTextWrapper>
               </PostContentContainer>
             </PostWrapper>

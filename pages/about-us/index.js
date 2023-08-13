@@ -183,7 +183,7 @@ export default function BlogPost({ post }) {
   );
 }
 // NOTE: We must use getStaticPaths and getStaticProps together, we cannot use getStaticPaths without getStaticProps, but we can use getStaticProps without getStaticPaths.
-export async function getStaticProps(context) {
+export async function getServerSideProps(context) {
   const postDetailData = await Promise.all([
     client.fetch(carouselQuery),
     client.fetch(AboutUsQuery),
